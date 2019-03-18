@@ -7,6 +7,7 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import orders from '../../axios-orders';
 import Spinner from '../../components/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENT_PRICES: {
   [key: string]: number;
@@ -106,13 +107,6 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
     ingredientsMap.forEach(pair => disabledInfo[pair[0]] = pair[1] === 0);
 
 
-    // let orderSummaryModal;
-    // if (this.state.purchasing) {
-    //   orderSummaryModal =
-    //     <Modal>
-    //       <OrderSummary ingredients={this.state.ingredients} />
-    //     </Modal>;
-    // }
     let modalContent;
 
     if (this.state.loading) {
@@ -147,4 +141,4 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
   }
 }
 
-export default BurgerBuilder;
+export default withErrorHandler(BurgerBuilder, orders);
