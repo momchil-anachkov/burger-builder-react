@@ -9,6 +9,7 @@ import orders from '../../axios-orders';
 import Spinner from '../../components/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from 'axios';
+import { BurgerBuilderProps } from './BurgerBuilderProps';
 
 const INGREDIENT_PRICES: {
   [key: string]: number;
@@ -19,7 +20,7 @@ const INGREDIENT_PRICES: {
   [BurgerIngredientType.BACON]: 0.7,
 }
 
-class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
+class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
     loading: false,
     ingredients: undefined,
@@ -70,32 +71,40 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
   }
 
   purchaseContinueHandler = () => {
-    // this.setState({ purchasing: false });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: 'Momchil',
-        email: 'some@fakemail.com',
-        deliveryMethod: 'fastest',
-        address: {
-          street: '123 Main street',
-          zipCode: '71239837192',
-          country: 'Shanosville'
-        }
-      }
-    }
-    this.setState({ loading: true });
-    orders
-      .post('/orders', order)
-      .then(response => {
-        console.log(response)
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({ loading: false, purchasing: false });
-      });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: 'Momchil',
+    //     email: 'some@fakemail.com',
+    //     deliveryMethod: 'fastest',
+    //     address: {
+    //       street: '123 Main street',
+    //       zipCode: '71239837192',
+    //       country: 'Shanosville'
+    //     }
+    //   }
+    // }
+    // this.setState({ loading: true });
+    // orders
+    //   .post('/orders', order)
+    //   .then(response => {
+    //     console.log(response)
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    // this.props.history.push('/checkout');
+    var searchQuery = Object.keys(this.state.ingredients!)
+      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(`${this.state.ingredients![k]}`))
+      .join('&');
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: searchQuery
+    });
   }
 
   calculatePurchasable = (ingredients: BurgerBuilderIngredientsState): boolean => {
@@ -120,14 +129,14 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
 
       burger =
         <React.Fragment>
-          <Burger ingredients={this.state.ingredients!} />
+          <Burger ingredients={ this.state.ingredients! } />
           <BuildControls
-            currentPrice={this.state.totalPrice}
-            disabledInfo={disabledInfo}
-            purchasable={this.state.purchasable}
-            ingredientAdded={this.addIngredientHandler}
-            ingredientRemoved={this.removeIngredientHandler}
-            orderNowClicked={this.purchaseHandler}
+            currentPrice={ this.state.totalPrice }
+            disabledInfo={ disabledInfo }
+            purchasable={ this.state.purchasable }
+            ingredientAdded={ this.addIngredientHandler }
+            ingredientRemoved={ this.removeIngredientHandler }
+            orderNowClicked={ this.purchaseHandler }
           />
         </React.Fragment>
     }
@@ -137,20 +146,20 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
     } else if (this.state.ingredients) {
       modalContent =
         <OrderSummary
-          ingredients={this.state.ingredients}
-          totalPrice={this.state.totalPrice}
-          cancelOrderClicked={this.purchaseCanceledHandler}
-          continueOrderClicked={this.purchaseContinueHandler}
+          ingredients={ this.state.ingredients }
+          totalPrice={ this.state.totalPrice }
+          cancelOrderClicked={ this.purchaseCanceledHandler }
+          continueOrderClicked={ this.purchaseContinueHandler }
         />
     }
 
     return (
       <React.Fragment>
-        {/* {orderSummaryModal} */}
-        <Modal show={this.state.purchasing} backdropClicked={this.purchaseCanceledHandler}>
-          {modalContent}
+        {/* {orderSummaryModal} */ }
+        <Modal show={ this.state.purchasing } backdropClicked={ this.purchaseCanceledHandler }>
+          { modalContent }
         </Modal>
-        {burger}
+        { burger }
       </React.Fragment>
     )
   }
