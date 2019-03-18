@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import classes from './App.module.scss';
 import Layout from './hoc/Layout/Layout';
 import Checkout from './containers/Checkout/Checkout';
+import { Switch, Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 
 class App extends Component {
 	state = {
@@ -10,7 +12,7 @@ class App extends Component {
 	}
 
 	componentDidMount = () => {
-		this.setState({loaded: true});
+		this.setState({ loaded: true });
 	}
 
 	render() {
@@ -20,11 +22,13 @@ class App extends Component {
 		}
 
 		return (
-			<div className={classList.join(' ')}>
+			<div className={ classList.join(' ') }>
 				<Layout>
-          <BurgerBuilder></BurgerBuilder>
-					<Checkout></Checkout>
-        </Layout>
+					<Switch>
+						<Route path="/checkout" exact component={ Checkout } ></Route>
+						<Route path="/" exact component={ BurgerBuilder }></Route>
+					</Switch>
+				</Layout>
 			</div>
 		);
 	}

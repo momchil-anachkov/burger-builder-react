@@ -11,6 +11,8 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-router": "^4.4.0",
+    "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.5",
     "typescript": "3.3.3333"
   },
@@ -28,5 +30,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/react-router": "^4.4.5",
+    "@types/react-router-dom": "^4.3.1"
+  }
 }
