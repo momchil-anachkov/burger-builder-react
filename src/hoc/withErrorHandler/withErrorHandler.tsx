@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Modal from '../../components/UI/Modal/Modal';
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Props } from '../../types/Props';
 
 const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
   return class A extends React.Component {
@@ -8,20 +9,18 @@ const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
       error: undefined
     };
 
-    componentDidMount = () => {
-      axios.interceptors.request.use(
-        (request: AxiosRequestConfig) => {
-          this.setState({ error: undefined });
-          return request;
-        }
-      );
-      axios.interceptors.response.use(
-        response => response,
-        (error: any) => {
-          this.setState({ error: error });
-        }
-      );
-    }
+    requestInterceptor: number = axios.interceptors.request.use(
+      (request: AxiosRequestConfig) => {
+        this.setState({ error: undefined });
+        return request;
+      }
+    );
+    responseInterceptor: number = axios.interceptors.response.use(
+      response => response,
+      (error: any) => {
+        this.setState({ error: error });
+      }
+    );
 
     componentDidCatch = (error: Error) => {
       this.setState({ error: true });
@@ -31,8 +30,10 @@ const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
       this.setState({ error: false });
     }
 
-
-
+    componentWillUnmount = () => {
+      axios.interceptors.request.eject(this.requestInterceptor);
+      axios.interceptors.response.eject(this.responseInterceptor);
+    }
 
     render = () => {
       return (
@@ -47,6 +48,5 @@ const withErrorHandler = (WrappedComponent: any, axios: AxiosInstance) => {
     }
   }
 }
-
 
 export default withErrorHandler;

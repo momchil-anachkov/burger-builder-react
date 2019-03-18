@@ -8,6 +8,7 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import orders from '../../axios-orders';
 import Spinner from '../../components/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from 'axios';
 
 const INGREDIENT_PRICES: {
   [key: string]: number;
@@ -21,22 +22,24 @@ const INGREDIENT_PRICES: {
 class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
   public state: BurgerBuilderState = {
     loading: false,
-    ingredients: {
-      [BurgerIngredientType.SALAD]: 0,
-      [BurgerIngredientType.BACON]: 0,
-      [BurgerIngredientType.CHEESE]: 0,
-      [BurgerIngredientType.MEAT]: 0,
-    },
+    ingredients: undefined,
     totalPrice: 4,
     purchasable: false,
     purchasing: false,
+    error: false,
   };
 
+  componentDidMount = () => {
+    orders.get('/ingredients')
+      .then(response => this.setState({ ingredients: response.data }))
+      .catch(err => this.setState({ error: true }));
+  }
+
   removeIngredientHandler = (type: BurgerIngredientType) => {
-    const oldIngredientAmount = this.state.ingredients[type] as number;
+    const oldIngredientAmount = this.state.ingredients![type] as number;
     if (oldIngredientAmount > 0) {
       const updatedIngredientAmount = oldIngredientAmount - 1;
-      const updatedIngredients = { ...this.state.ingredients };
+      const updatedIngredients = { ...this.state.ingredients! };
       updatedIngredients[type] = updatedIngredientAmount;
       const priceToDeduct = INGREDIENT_PRICES[type];
       const oldPrice = this.state.totalPrice;
@@ -47,9 +50,9 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
   }
 
   addIngredientHandler = (type: BurgerIngredientType) => {
-    const oldIngredientAmount = this.state.ingredients[type] as number;
+    const oldIngredientAmount = this.state.ingredients![type] as number;
     const updatedIngredientAmount = oldIngredientAmount + 1;
-    const updatedIngredients = { ...this.state.ingredients };
+    const updatedIngredients = { ...this.state.ingredients! };
     updatedIngredients[type] = updatedIngredientAmount;
     const priceToAdd = INGREDIENT_PRICES[type];
     const oldPrice = this.state.totalPrice;
@@ -102,16 +105,36 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
   }
 
   render = () => {
-    const ingredientsMap = Object.entries(this.state.ingredients);
-    const disabledInfo: { [key: string]: boolean } = {};
-    ingredientsMap.forEach(pair => disabledInfo[pair[0]] = pair[1] === 0);
-
 
     let modalContent;
 
+    let burger = <Spinner />
+
+    if (this.state.error) {
+      burger = <p>Ingredients couldn't be loaded</p>
+    }
+    if (this.state.ingredients) {
+      const ingredientsMap = Object.entries(this.state.ingredients!);
+      const disabledInfo: { [key: string]: boolean } = {};
+      ingredientsMap.forEach(pair => disabledInfo[pair[0]] = pair[1] === 0);
+
+      burger =
+        <React.Fragment>
+          <Burger ingredients={this.state.ingredients!} />
+          <BuildControls
+            currentPrice={this.state.totalPrice}
+            disabledInfo={disabledInfo}
+            purchasable={this.state.purchasable}
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+            orderNowClicked={this.purchaseHandler}
+          />
+        </React.Fragment>
+    }
+
     if (this.state.loading) {
       modalContent = <Spinner />
-    } else {
+    } else if (this.state.ingredients) {
       modalContent =
         <OrderSummary
           ingredients={this.state.ingredients}
@@ -126,16 +149,8 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
         {/* {orderSummaryModal} */}
         <Modal show={this.state.purchasing} backdropClicked={this.purchaseCanceledHandler}>
           {modalContent}
-        </Modal>;
-        <Burger ingredients={this.state.ingredients} />
-        <BuildControls
-          currentPrice={this.state.totalPrice}
-          disabledInfo={disabledInfo}
-          purchasable={this.state.purchasable}
-          ingredientAdded={this.addIngredientHandler}
-          ingredientRemoved={this.removeIngredientHandler}
-          orderNowClicked={this.purchaseHandler}
-        />
+        </Modal>
+        {burger}
       </React.Fragment>
     )
   }
