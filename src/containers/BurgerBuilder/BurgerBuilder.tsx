@@ -5,6 +5,7 @@ import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/B
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import orders from '../../axios-orders';
 
 const INGREDIENT_PRICES: {
   [key: string]: number;
@@ -64,6 +65,24 @@ class BurgerBuilder extends React.Component<any, BurgerBuilderState> {
 
   purchaseContinueHandler = () => {
     // this.setState({ purchasing: false });
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Momchil',
+        email: 'some@fakemail.com',
+        deliveryMethod: 'fastest',
+        address: {
+          street: '123 Main street',
+          zipCode: '71239837192',
+          country: 'Shanosville'
+        }
+      }
+    }
+    orders
+      .post('/orders', order)
+      .then(response => console.log(response))
+      .catch(error => console.log(error));
   }
 
   calculatePurchasable = (ingredients: BurgerBuilderIngredientsState): boolean => {
