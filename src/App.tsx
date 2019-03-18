@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import classes from './App.module.scss';
 import Layout from './hoc/Layout/Layout';
+import Checkout from './containers/Checkout/Checkout';
 
 class App extends Component {
 	state = {
@@ -22,6 +23,7 @@ class App extends Component {
 			<div className={classList.join(' ')}>
 				<Layout>
           <BurgerBuilder></BurgerBuilder>
+					<Checkout></Checkout>
         </Layout>
 			</div>
 		);
