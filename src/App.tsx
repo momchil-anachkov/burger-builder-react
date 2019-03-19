@@ -25,7 +25,7 @@ class App extends Component {
 			<div className={ classList.join(' ') }>
 				<Layout>
 					<Switch>
-						<Route path="/checkout" exact component={ Checkout } ></Route>
+						<Route path="/checkout" component={ Checkout } ></Route>
 						<Route path="/" exact component={ BurgerBuilder }></Route>
 					</Switch>
 				</Layout>

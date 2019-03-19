@@ -2,6 +2,8 @@ import React from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
 import { CheckoutProps } from './CheckoutProps';
+import { Route } from 'react-router-dom';
+import ContactData from './ContactData/ContactData';
 
 class Checkout extends React.Component<CheckoutProps> {
   state = {
@@ -33,6 +35,7 @@ class Checkout extends React.Component<CheckoutProps> {
           cancelClicked={ this.checkoutCanceledHandler }
           continueClicked={ this.checkoutContinueHandler }
         />
+        <Route path={`${this.props.match!.url}/contact-data`} component={ContactData}></Route>
       </div >
     );
   }
