@@ -14,7 +14,7 @@ class Checkout extends React.Component<CheckoutProps> {
   componentDidMount() {
     const queryParams = new URLSearchParams(this.props.location.search);
     const ingredients: any = {};
-    let price: number;
+    let price: number = 0;
     for (let paramEntries of queryParams.entries()) {
       if (paramEntries[0] === 'totalPrice') {
         price = +paramEntries[1];
@@ -22,7 +22,7 @@ class Checkout extends React.Component<CheckoutProps> {
         ingredients[paramEntries[0]] = +paramEntries[1];
       }
     }
-    this.setState({ ingredients: ingredients });
+    this.setState({ ingredients: ingredients, price: price });
   }
 
   checkoutCanceledHandler = () => {
