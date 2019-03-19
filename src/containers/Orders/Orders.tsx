@@ -2,9 +2,11 @@ import React from 'react';
 import Order from '../../components/Order/Order';
 import orders from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import { RouteChildrenProps } from 'react-router';
+import { OrdersState } from './OrdersState';
 
-export class Orders extends React.Component {
-  state: any = {
+export class Orders extends React.Component<RouteChildrenProps, OrdersState> {
+  state: OrdersState = {
     orders: [],
     loading: true,
   };
@@ -26,7 +28,16 @@ export class Orders extends React.Component {
   render = () => {
     return (
       <div>
-        { this.state.orders.map((order: any) => <Order key={ order.id }></Order>) }
+        {
+          this.state.orders
+            .map((order: any) => (
+              <Order
+                key={ order.id }
+                ingredients={ order.ingredients }
+                price={order.price}
+              />)
+            )
+        }
       </div>
     );
   }
