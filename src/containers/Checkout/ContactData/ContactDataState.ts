@@ -4,6 +4,7 @@ export interface ContactDataAddress {
 }
 
 export interface ContactDataState {
+  loading: boolean;
   name: string;
   email: string;
   address: ContactDataAddress,
