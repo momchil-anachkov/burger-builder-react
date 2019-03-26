@@ -6,6 +6,8 @@ import classes from './ContactData.module.scss';
 import { ContactDataProps } from './ContactDataProps';
 import orders from '../../../axios-orders';
 import Spinner from '../../../components/Spinner/Spinner';
+import Input from '../../../components/UI/Input/Input';
+import { InputType } from '../../../components/UI/Input/InputProps';
 
 class ContactData extends React.Component<ContactDataProps, ContactDataState> {
   state: ContactDataState = {
@@ -52,10 +54,10 @@ class ContactData extends React.Component<ContactDataProps, ContactDataState> {
   render = () => {
     let form = (
       <form>
-        <input className={ classes.Input } type="text" name="name" id="name" placeholder="Your Name" />
-        <input className={ classes.Input } type="email" name="email" id="email" placeholder="Your Mail" />
-        <input className={ classes.Input } type="text" name="street" id="street" placeholder="Your Street" />
-        <input className={ classes.Input } type="text" name="postal" id="postal" placeholder="Your Postal" />
+        <Input inputtype={InputType.INPUT} label="Name" name="name" id="name" placeholder="Your Name" />
+        <Input inputtype={InputType.INPUT} label="Email" name="email" id="email" placeholder="Your Mail" />
+        <Input inputtype={InputType.INPUT} label="Street" name="street" id="street" placeholder="Your Street" />
+        <Input inputtype={InputType.INPUT} label="Postal Code" name="postal" id="postal" placeholder="Your Postal Code" />
         <Button buttonType={ ButtonType.SUCCESS } clicked={ this.orderSubmittedHandler }>ORDER</Button>
       </form>
     );
