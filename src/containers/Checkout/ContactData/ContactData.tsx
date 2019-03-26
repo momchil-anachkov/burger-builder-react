@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { ContactDataState } from './ContactDataState';
 import Button from '../../../components/UI/Button/Button';
 import { ButtonType } from '../../../components/UI/Button/ButtonProps';
@@ -7,16 +7,66 @@ import { ContactDataProps } from './ContactDataProps';
 import orders from '../../../axios-orders';
 import Spinner from '../../../components/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
-import { InputType } from '../../../components/UI/Input/InputProps';
 
-class ContactData extends React.Component<ContactDataProps, ContactDataState> {
-  state: ContactDataState = {
+class ContactData extends React.Component<ContactDataProps, any> {
+  state: any = {
     loading: false,
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: '',
+    orderForm: {
+      name: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Name'
+        },
+        value: '',
+      },
+      email: {
+        elementType: 'email',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Email'
+        },
+        value: '',
+      },
+
+      deliveryMethod: {
+        elementType: 'select',
+        elementConfig: {
+          options: [
+            {value: 'fastest', displayValue: 'Fastest'},
+            {value: 'cheapest', displayValue: 'Cheapest'}
+          ]
+        },
+        value: '',
+      },
+
+      street: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Your Street'
+        },
+        value: '',
+      },
+
+      zipCode: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'ZIP Code'
+        },
+        value: '',
+      },
+
+      country: {
+        elementType: 'input',
+        elementConfig: {
+          type: 'text',
+          placeholder: 'Country'
+        },
+        value: '',
+      },
+
     }
   }
 
@@ -51,13 +101,42 @@ class ContactData extends React.Component<ContactDataProps, ContactDataState> {
       });
   }
 
+  inputChangedHandler = (inputIdentifier: string, event: any) => {
+    const updatedOrderForm = {
+      ...this.state.orderForm,
+      [inputIdentifier]: {
+        ...this.state.orderForm[inputIdentifier],
+        value: event.target.value,
+      }
+    }
+    this.setState({orderForm: updatedOrderForm});
+  }
+
   render = () => {
+    
+    const formElementsArray = Object.keys(this.state.orderForm)
+      .map((key) => ({
+        id: key,
+        config: this.state.orderForm[key],
+      }))
+      .map((item) => (
+        <Input
+          key={item.id}
+          label={item.config.elementConfig.placeholder}
+          elementType={item.config.elementType}
+          elementConfig={item.config.elementConfig}
+          value={item.config.value}
+          changed={this.inputChangedHandler.bind(this, item.id)}
+        />
+      ))
+
     let form = (
       <form>
-        <Input inputtype={InputType.INPUT} label="Name" name="name" id="name" placeholder="Your Name" />
-        <Input inputtype={InputType.INPUT} label="Email" name="email" id="email" placeholder="Your Mail" />
+        {formElementsArray}
+        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
+        {/* <Input inputtype={InputType.INPUT} label="Email" name="email" id="email" placeholder="Your Mail" />
         <Input inputtype={InputType.INPUT} label="Street" name="street" id="street" placeholder="Your Street" />
-        <Input inputtype={InputType.INPUT} label="Postal Code" name="postal" id="postal" placeholder="Your Postal Code" />
+        <Input inputtype={InputType.INPUT} label="Postal Code" name="postal" id="postal" placeholder="Your Postal Code" /> */}
         <Button buttonType={ ButtonType.SUCCESS } clicked={ this.orderSubmittedHandler }>ORDER</Button>
       </form>
     );

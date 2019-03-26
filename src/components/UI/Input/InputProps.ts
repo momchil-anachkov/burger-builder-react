@@ -1,12 +1,9 @@
 import { Props } from '../../../types/Props';
 
-export enum InputType {
-  INPUT = 'INPUT',
-  TEXTAREA = 'TEXTAREA',
-}
-
 export interface InputProps extends Props {
   label: string;
-  inputtype: InputType;
-  [key: string]: any;
+  elementType: string;
+  elementConfig: any;
+  value: any;
+  changed: (event: any) => void;
 }
