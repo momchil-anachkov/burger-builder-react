@@ -70,22 +70,20 @@ class ContactData extends React.Component<ContactDataProps, any> {
     }
   }
 
-  orderSubmittedHandler = (event: Event) => {
+  orderSubmittedHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(this.props.ingredients);
+    // console.log(this.props.ingredients);
+    const formData: any = {};
+    Object.keys(this.state.orderForm)
+      .forEach((formElementKey) => {
+        formData[formElementKey] = this.state.orderForm[formElementKey].value
+      });
+    console.log(formData);
+      
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      customer: {
-        name: 'Momchil',
-        email: 'some@fakemail.com',
-        deliveryMethod: 'fastest',
-        address: {
-          street: '123 Main street',
-          zipCode: '71239837192',
-          country: 'Shanosville'
-        }
-      }
+      orderData: formData,
     }
     this.setState({ loading: true });
     orders
@@ -131,12 +129,8 @@ class ContactData extends React.Component<ContactDataProps, any> {
       ))
 
     let form = (
-      <form>
+      <form onSubmit={this.orderSubmittedHandler}>
         {formElementsArray}
-        {/* <Input elementType="..." elementConfig="..." value="..." /> */}
-        {/* <Input inputtype={InputType.INPUT} label="Email" name="email" id="email" placeholder="Your Mail" />
-        <Input inputtype={InputType.INPUT} label="Street" name="street" id="street" placeholder="Your Street" />
-        <Input inputtype={InputType.INPUT} label="Postal Code" name="postal" id="postal" placeholder="Your Postal Code" /> */}
         <Button buttonType={ ButtonType.SUCCESS } clicked={ this.orderSubmittedHandler }>ORDER</Button>
       </form>
     );
