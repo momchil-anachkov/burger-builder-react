@@ -7,5 +7,6 @@ export enum ButtonType {
 
 export interface ButtonProps extends Props {
   buttonType: ButtonType,
+  disabled?: boolean,
   clicked: (event: any) => void;
 }

@@ -11,6 +11,7 @@ import Input from '../../../components/UI/Input/Input';
 class ContactData extends React.Component<ContactDataProps, any> {
   state: any = {
     loading: false,
+    formIsValid: false,
     orderForm: {
       name: {
         elementType: 'input',
@@ -47,7 +48,9 @@ class ContactData extends React.Component<ContactDataProps, any> {
             {value: 'cheapest', displayValue: 'Cheapest'}
           ]
         },
-        value: '',
+        value: 'fastest',
+        validation: {},
+        valid: true,
         touched: false,
       },
 
@@ -141,18 +144,27 @@ class ContactData extends React.Component<ContactDataProps, any> {
   }
 
   inputChangedHandler = (inputIdentifier: string, event: any) => {
+    let inputIsValid = true;
+    const validationConfig = this.state.orderForm[inputIdentifier].validation;
+    if (validationConfig) {
+      inputIsValid = this.checkValidity(validationConfig, event.target.value);
+    }
+
     const updatedOrderForm = {
       ...this.state.orderForm,
       [inputIdentifier]: {
         ...this.state.orderForm[inputIdentifier],
         value: event.target.value,
-        valid: this.checkValidity(this.state.orderForm[inputIdentifier].validation, event.target.value),
+        valid: inputIsValid,
         touched: true
       }
     }
-    console.log(updatedOrderForm);
+
+    const formIsValid = inputIsValid && Object.values(updatedOrderForm).reduce((accumulator: boolean, currentItem: any) => {
+      return accumulator && currentItem.valid;
+    }, true);
     
-    this.setState({orderForm: updatedOrderForm});
+    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
   }
 
   render = () => {
@@ -179,7 +191,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
     let form = (
       <form onSubmit={this.orderSubmittedHandler}>
         {formElementsArray}
-        <Button buttonType={ ButtonType.SUCCESS } clicked={ this.orderSubmittedHandler }>ORDER</Button>
+        <Button buttonType={ ButtonType.SUCCESS } disabled={!this.state.formIsValid} clicked={ this.orderSubmittedHandler }>ORDER</Button>
       </form>
     );
 
