@@ -23,6 +23,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
         validation: {
           required: true,
         },
+        touched: false,
       },
       email: {
         elementType: 'email',
@@ -35,6 +36,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
         validation: {
           required: true,
         },
+        touched: false,
       },
 
       deliveryMethod: {
@@ -46,6 +48,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
           ]
         },
         value: '',
+        touched: false,
       },
 
       street: {
@@ -59,6 +62,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
         validation: {
           required: true,
         },
+        touched: false,
       },
 
       zipCode: {
@@ -73,6 +77,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
           minLength: 5,
           maxLength: 5,
         },
+        touched: false,
       },
 
       country: {
@@ -86,6 +91,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
         validation: {
           required: true,
         },
+        touched: false,
       },
 
     }
@@ -140,7 +146,8 @@ class ContactData extends React.Component<ContactDataProps, any> {
       [inputIdentifier]: {
         ...this.state.orderForm[inputIdentifier],
         value: event.target.value,
-        valid: this.checkValidity(this.state.orderForm[inputIdentifier].validation, event.target.value)
+        valid: this.checkValidity(this.state.orderForm[inputIdentifier].validation, event.target.value),
+        touched: true
       }
     }
     console.log(updatedOrderForm);
@@ -164,6 +171,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
           value={item.config.value}
           invalid={!item.config.valid}
           shouldValidate={!!item.config.validation}
+          touched={item.config.touched}
           changed={this.inputChangedHandler.bind(this, item.id)}
         />
       ))
