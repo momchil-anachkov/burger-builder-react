@@ -5,13 +5,18 @@ import classes from './Input.module.scss';
 
 const Input = (props: InputProps) => {
   let input;
+  const inputClasses = [classes.InputElement];
+
+  if (props.invalid && props.shouldValidate){
+    inputClasses.push(classes.Invalid);
+  }
 
   switch(props.elementType) {
     case 'input':
     case 'email':
       input = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           onChange={props.changed}
           {...props.elementConfig}
           value={props.value}
@@ -22,7 +27,7 @@ const Input = (props: InputProps) => {
     case 'textarea':
       input = (
         <textarea
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           onChange={props.changed}
           {...props.elementConfig}
           value={props.value}
@@ -33,7 +38,7 @@ const Input = (props: InputProps) => {
     case 'select':
       input = (
         <select
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           onChange={props.changed}
           {...props.elementConfig}
           value={props.value}
@@ -48,7 +53,7 @@ const Input = (props: InputProps) => {
     default:
       input = (
         <input
-          className={classes.InputElement}
+          className={inputClasses.join(' ')}
           onChange={props.changed}
           {...props.elementConfig}
           value={props.value}

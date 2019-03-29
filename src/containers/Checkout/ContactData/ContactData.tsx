@@ -162,6 +162,8 @@ class ContactData extends React.Component<ContactDataProps, any> {
           elementType={item.config.elementType}
           elementConfig={item.config.elementConfig}
           value={item.config.value}
+          invalid={!item.config.valid}
+          shouldValidate={!!item.config.validation}
           changed={this.inputChangedHandler.bind(this, item.id)}
         />
       ))

@@ -5,5 +5,7 @@ export interface InputProps extends Props {
   elementType: string;
   elementConfig: any;
   value: any;
+  invalid: boolean;
+  shouldValidate: boolean;
   changed: (event: any) => void;
 }
