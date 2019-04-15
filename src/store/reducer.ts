@@ -13,7 +13,17 @@ const initialState = {
     totalPrice: 4,
 };
 
-const reducer = (state: BurgerBuilderState = initialState, action: IngredientActions) => {
+const INGREDIENT_PRICES: {
+  [key: string]: number;
+} = {
+  [BurgerIngredientType.SALAD]: 0.5,
+  [BurgerIngredientType.CHEESE]: 0.4,
+  [BurgerIngredientType.MEAT]: 1.3,
+  [BurgerIngredientType.BACON]: 0.7,
+}
+
+
+const reducer = (state: BurgerBuilderState = initialState, action: IngredientActions): BurgerBuilderState => {
 
 
   switch (action.type) {
@@ -23,7 +33,8 @@ const reducer = (state: BurgerBuilderState = initialState, action: IngredientAct
         ingredients: { 
           ...state.ingredients,
           [action.payload]: state.ingredients[action.payload] + 1,
-        }
+        },
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
       };
 
     case ActionTypes.REMOVE_INGREDIENT:
@@ -32,7 +43,8 @@ const reducer = (state: BurgerBuilderState = initialState, action: IngredientAct
         ingredients: {
           ...state.ingredients,
           [action.payload]: state.ingredients[action.payload] - 1,
-        }
+        },
+        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
       };
 
     default:
