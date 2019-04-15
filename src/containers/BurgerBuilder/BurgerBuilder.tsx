@@ -65,6 +65,8 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 
     let burger = <Spinner />
 
+    const purchasable = this.calculatePurchasable(this.props.ingredients);
+
     if (this.state.error) {
       burger = <p>Ingredients couldn't be loaded</p>
     }
@@ -77,12 +79,9 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
         <React.Fragment>
           <Burger ingredients={ this.props.ingredients! } />
           <BuildControls
-            // currentPrice={ this.state.totalPrice }
             currentPrice={ this.props.totalPrice }
             disabledInfo={ disabledInfo }
-            purchasable={ this.state.purchasable }
-            // ingredientAdded={ this.addIngredientHandler }
-            // ingredientRemoved={ this.removeIngredientHandler }
+            purchasable={ purchasable }
             ingredientAdded={ this.props.addIngredient }
             ingredientRemoved={ this.props.removeIngredient }
             orderNowClicked={ this.purchaseHandler }
