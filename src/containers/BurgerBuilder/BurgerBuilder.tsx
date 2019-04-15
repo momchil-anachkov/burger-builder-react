@@ -19,7 +19,6 @@ import { ActionTypes } from '../../store/action-types';
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
     loading: false,
-    totalPrice: 4,
     purchasable: false,
     purchasing: false,
     error: false,
@@ -30,32 +29,6 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
     //   .then(response => this.setState({ ingredients: response.data }))
     //   .catch(err => this.setState({ error: true }));
   }
-
-  // removeIngredientHandler = (type: BurgerIngredientType) => {
-  //   const oldIngredientAmount = this.state.ingredients![type] as number;
-  //   if (oldIngredientAmount > 0) {
-  //     const updatedIngredientAmount = oldIngredientAmount - 1;
-  //     const updatedIngredients = { ...this.state.ingredients! };
-  //     updatedIngredients[type] = updatedIngredientAmount;
-  //     const priceToDeduct = INGREDIENT_PRICES[type];
-  //     const oldPrice = this.state.totalPrice;
-  //     const newPrice = oldPrice - priceToDeduct;
-  //     const purchasable = this.calculatePurchasable(updatedIngredients);
-  //     this.setState({ ingredients: updatedIngredients, totalPrice: newPrice, purchasable });
-  //   }
-  // }
-
-  // addIngredientHandler = (type: BurgerIngredientType) => {
-  //   const oldIngredientAmount = this.state.ingredients![type] as number;
-  //   const updatedIngredientAmount = oldIngredientAmount + 1;
-  //   const updatedIngredients = { ...this.state.ingredients! };
-  //   updatedIngredients[type] = updatedIngredientAmount;
-  //   const priceToAdd = INGREDIENT_PRICES[type];
-  //   const oldPrice = this.state.totalPrice;
-  //   const newPrice = oldPrice + priceToAdd;
-  //   const purchasable = this.calculatePurchasable(updatedIngredients);
-  //   this.setState({ ingredients: updatedIngredients, totalPrice: newPrice, purchasable });
-  // }
 
   purchaseHandler = () => {
     this.setState({ purchasing: true });
@@ -71,7 +44,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
       .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(`${this.state.ingredients![k]}`))
       // .join('&');
 
-    queryParams.push(`totalPrice=${this.state.totalPrice}`);
+    queryParams.push(`totalPrice=${this.props.totalPrice}`);
     const queryString = queryParams.join('&');
 
     this.props.history.push({
@@ -123,7 +96,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
       modalContent =
         <OrderSummary
           ingredients={ this.props.ingredients }
-          totalPrice={ this.state.totalPrice }
+          totalPrice={ this.props.totalPrice }
           cancelOrderClicked={ this.purchaseCanceledHandler }
           continueOrderClicked={ this.purchaseContinueHandler }
         />
