@@ -4,6 +4,9 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
+import reducer from './store/reducer';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 const root = document.getElementById('root') as HTMLElement;
 
@@ -11,10 +14,14 @@ window.onload = () => {
   root.classList.remove('preload');
 };
 
+const store = createStore(reducer);
+
 const app = (
-  <BrowserRouter>
-    <App></App>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <App></App>
+    </BrowserRouter>
+  </Provider>
 );
 
 ReactDOM.render(app, document.getElementById('root'));
