@@ -3,10 +3,12 @@ import { ContactDataState } from './ContactDataState';
 import Button from '../../../components/UI/Button/Button';
 import { ButtonType } from '../../../components/UI/Button/ButtonProps';
 import classes from './ContactData.module.scss';
-import { ContactDataProps } from './ContactDataProps';
+import { ContactDataProps, ContactDataStateProps, ContactDataOwnProps } from './ContactDataProps';
 import orders from '../../../axios-orders';
 import Spinner from '../../../components/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import { MapDispatchToPropsFunction, MapStateToProps, connect } from 'react-redux';
+import { BurgerBuilderState } from '../../../store/burger-builder.state';
 
 class ContactData extends React.Component<ContactDataProps, any> {
   state: any = {
@@ -208,4 +210,9 @@ class ContactData extends React.Component<ContactDataProps, any> {
   }
 }
 
-export default ContactData;
+const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProps, BurgerBuilderState> = (state) => ({
+  ingredients: state.ingredients,
+  totalPrice: state.totalPrice,
+});
+
+export default connect(mapStateToProps)(ContactData);

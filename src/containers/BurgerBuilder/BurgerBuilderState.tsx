@@ -4,7 +4,6 @@ export interface BurgerBuilderIngredientsState {
 
 export interface BurgerBuilderState {
   loading: boolean;
-  purchasable: boolean;
   purchasing: boolean;
   ingredients?: BurgerBuilderIngredientsState;
   error: boolean;

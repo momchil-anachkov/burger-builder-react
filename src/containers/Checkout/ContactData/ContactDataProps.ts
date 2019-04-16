@@ -1,6 +1,13 @@
-import { BurgerProps } from '../../../components/Burger/BurgerProps';
 import { RouteChildrenProps } from 'react-router';
+import { BurgerIngredientsMap } from '../../../components/Burger/BurgerIngredient/BurgerIngredientsMapType';
 
-export interface ContactDataProps extends BurgerProps, RouteChildrenProps {
+export interface ContactDataStateProps {
+  ingredients: BurgerIngredientsMap,
   totalPrice: number,
+}
+
+export interface ContactDataOwnProps {
+}
+
+export interface ContactDataProps extends ContactDataStateProps, RouteChildrenProps {
 }

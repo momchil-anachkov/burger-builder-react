@@ -19,7 +19,6 @@ import { ActionTypes } from '../../store/action-types';
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
     loading: false,
-    purchasable: false,
     purchasing: false,
     error: false,
   };
@@ -40,16 +39,16 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 
   purchaseContinueHandler = () => {
     // this.props.history.push('/checkout');
-    const queryParams = Object.keys(this.state.ingredients!)
-      .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(`${this.state.ingredients![k]}`))
-      // .join('&');
+    // const queryParams = Object.keys(this.state.ingredients!)
+    //   .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(`${this.state.ingredients![k]}`))
+    //   // .join('&');
 
-    queryParams.push(`totalPrice=${this.props.totalPrice}`);
-    const queryString = queryParams.join('&');
+    // queryParams.push(`totalPrice=${this.props.totalPrice}`);
+    // const queryString = queryParams.join('&');
 
     this.props.history.push({
       pathname: '/checkout',
-      search: queryString
+      // search: queryString
     });
   }
 
