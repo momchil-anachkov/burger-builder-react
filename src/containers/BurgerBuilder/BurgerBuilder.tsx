@@ -11,10 +11,11 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { BurgerBuilderProps, BurgerBuilderDispatchProps } from './BurgerBuilderProps';
 import { BurgerBuilderState as BurgerBuilderReduxState } from '../../store/burger-builder.state';
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
-import { AddIngredient, RemoveIngredient, IngredientActions } from '../../store/actions';
 import { BurgerIngredientProps } from '../../components/Burger/BurgerIngredient/BurgerIngredientProps';
 import { Action, Dispatch } from 'redux';
 import { ActionTypes } from '../../store/action-types';
+import { IngredientActions } from '../../store/actions/actionTypes';
+import { addIngredient, removeIngredient } from '../../store/actions/burgerBuilder';
 
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
@@ -121,10 +122,10 @@ const mapStateToProps = (state: BurgerBuilderReduxState) => {
 const mapDispatchToProps: MapDispatchToPropsFunction<BurgerBuilderDispatchProps, BurgerIngredientProps> = (dispatch: Dispatch<IngredientActions>) => ({
   // addIngredient: (ingredientType: BurgerIngredientType) =>  dispatch(new AddIngredient(ingredientType)),
   addIngredient: (ingredientType: BurgerIngredientType) =>  {
-    dispatch({ type: ActionTypes.ADD_INGREDIENT, payload: ingredientType });
+    dispatch(addIngredient(ingredientType));
   },
   removeIngredient: (ingredientType: BurgerIngredientType) => {
-    dispatch({ type: ActionTypes.REMOVE_INGREDIENT, payload: ingredientType });
+    dispatch(removeIngredient(ingredientType));
   }
 });
 

@@ -4,9 +4,9 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
-import reducer from './store/reducer';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
 
 const root = document.getElementById('root') as HTMLElement;
 
@@ -15,7 +15,7 @@ window.onload = () => {
 };
 
 const store = createStore(
-  reducer,
+  burgerBuilderReducer,
   (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__()
 );
 

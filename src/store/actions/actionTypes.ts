@@ -1,6 +1,6 @@
-import { BurgerIngredientType } from '../components/Burger/BurgerIngredient/BurgerIngredientType';
 import { Action } from 'redux';
-import { ActionTypes } from './action-types';
+import { ActionTypes } from '../action-types';
+import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
 
 export class AddIngredient implements Action<string> {
   readonly type = ActionTypes.ADD_INGREDIENT;
