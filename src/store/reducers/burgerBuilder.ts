@@ -1,16 +1,11 @@
 import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
 import { BurgerBuilderState } from '../burger-builder.state';
-import { ActionTypes } from '../action-types';
-import { IngredientActions } from '../actions/actionTypes';
+import { IngredientActions, ActionTypes } from '../actions/actionTypes';
 
 const initialState = {
-    ingredients: {
-      [BurgerIngredientType.SALAD]: 0,
-      [BurgerIngredientType.BACON]: 0,
-      [BurgerIngredientType.MEAT]: 0,
-      [BurgerIngredientType.CHEESE]: 0,
-    },
+    ingredients: null,
     totalPrice: 4,
+    error: false,
 };
 
 const INGREDIENT_PRICES: {
@@ -31,7 +26,7 @@ const burgerBuilderReducer = (state: BurgerBuilderState = initialState, action: 
         ...state,
         ingredients: { 
           ...state.ingredients,
-          [action.payload]: state.ingredients[action.payload] + 1,
+          [action.payload]: state.ingredients![action.payload] + 1,
         },
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
       };
@@ -41,10 +36,23 @@ const burgerBuilderReducer = (state: BurgerBuilderState = initialState, action: 
         ...state,
         ingredients: {
           ...state.ingredients,
-          [action.payload]: state.ingredients[action.payload] - 1,
+          [action.payload]: state.ingredients![action.payload] - 1,
         },
         totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
       };
+
+    case ActionTypes.SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.payload,
+        error: false,
+      }
+
+    case ActionTypes.FETCH_INGREDIENTS_FAILED:
+      return {
+        ...state,
+        error: true,
+      }
 
     default:
       return state;

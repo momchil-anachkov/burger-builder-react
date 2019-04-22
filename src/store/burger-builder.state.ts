@@ -1,6 +1,7 @@
 export interface BurgerBuilderState {
-  ingredients: {
+  ingredients: null | {
     [key: string]: number;
   };
   totalPrice: number;
+  error: boolean;
 };

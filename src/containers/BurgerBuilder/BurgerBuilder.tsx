@@ -5,7 +5,6 @@ import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/B
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
-import orders from '../../axios-orders';
 import Spinner from '../../components/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { BurgerBuilderProps, BurgerBuilderDispatchProps } from './BurgerBuilderProps';
@@ -13,21 +12,17 @@ import { BurgerBuilderState as BurgerBuilderReduxState } from '../../store/burge
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { BurgerIngredientProps } from '../../components/Burger/BurgerIngredient/BurgerIngredientProps';
 import { Action, Dispatch } from 'redux';
-import { ActionTypes } from '../../store/action-types';
 import { IngredientActions } from '../../store/actions/actionTypes';
-import { addIngredient, removeIngredient } from '../../store/actions/burgerBuilder';
+import { addIngredient, removeIngredient, initializeIngredients } from '../../store/actions/burgerBuilder';
+import orders from '../../axios-orders';
 
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
-    loading: false,
     purchasing: false,
-    error: false,
   };
 
   componentDidMount = () => {
-    // orders.get('/ingredients')
-    //   .then(response => this.setState({ ingredients: response.data }))
-    //   .catch(err => this.setState({ error: true }));
+    this.props.initializeIngredients();
   }
 
   purchaseHandler = () => {
@@ -65,19 +60,20 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 
     let burger = <Spinner />
 
-    const purchasable = this.calculatePurchasable(this.props.ingredients);
+    let purchasable
 
-    if (this.state.error) {
+    if (this.props.error) {
       burger = <p>Ingredients couldn't be loaded</p>
     }
     if (this.props.ingredients) {
-      const ingredientsMap = Object.entries(this.props.ingredients!);
+      purchasable = this.calculatePurchasable(this.props.ingredients);
+      const ingredientsMap = Object.entries(this.props.ingredients);
       const disabledInfo: { [key: string]: boolean } = {};
       ingredientsMap.forEach(pair => disabledInfo[pair[0]] = pair[1] === 0);
 
       burger =
         <React.Fragment>
-          <Burger ingredients={ this.props.ingredients! } />
+          <Burger ingredients={ this.props.ingredients } />
           <BuildControls
             currentPrice={ this.props.totalPrice }
             disabledInfo={ disabledInfo }
@@ -89,9 +85,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
         </React.Fragment>
     }
 
-    if (this.state.loading) {
-      modalContent = <Spinner />
-    } else if (this.props.ingredients) {
+    if (this.props.ingredients) {
       modalContent =
         <OrderSummary
           ingredients={ this.props.ingredients }
@@ -115,17 +109,21 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 const mapStateToProps = (state: BurgerBuilderReduxState) => {
   return {
     ingredients: state.ingredients,
-    totalPrice: state.totalPrice
+    totalPrice: state.totalPrice,
+    error: state.error
   }
 }
 
 const mapDispatchToProps: MapDispatchToPropsFunction<BurgerBuilderDispatchProps, BurgerIngredientProps> = (dispatch: Dispatch<IngredientActions>) => ({
   // addIngredient: (ingredientType: BurgerIngredientType) =>  dispatch(new AddIngredient(ingredientType)),
-  addIngredient: (ingredientType: BurgerIngredientType) =>  {
+  addIngredient: (ingredientType: BurgerIngredientType) => {
     dispatch(addIngredient(ingredientType));
   },
   removeIngredient: (ingredientType: BurgerIngredientType) => {
     dispatch(removeIngredient(ingredientType));
+  },
+  initializeIngredients: () => {
+    dispatch(initializeIngredients())
   }
 });
 

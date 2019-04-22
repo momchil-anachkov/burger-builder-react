@@ -1,6 +1,5 @@
 import React from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
 import { CheckoutProps } from './CheckoutProps';
 import { Route } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
@@ -37,7 +36,7 @@ class Checkout extends React.Component<CheckoutProps> {
 }
 
 const mapStateToProps = (state: BurgerBuilderState) => ({
-  ingredients: state.ingredients,
+  ingredients: state.ingredients!,
   price: state.totalPrice,
 })
 

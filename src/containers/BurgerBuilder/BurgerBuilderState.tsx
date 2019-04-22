@@ -3,8 +3,6 @@ export interface BurgerBuilderIngredientsState {
 }
 
 export interface BurgerBuilderState {
-  loading: boolean;
   purchasing: boolean;
   ingredients?: BurgerBuilderIngredientsState;
-  error: boolean;
 }

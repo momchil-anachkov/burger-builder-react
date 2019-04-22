@@ -211,7 +211,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
 }
 
 const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProps, BurgerBuilderState> = (state) => ({
-  ingredients: state.ingredients,
+  ingredients: state.ingredients!,
   totalPrice: state.totalPrice,
 });
 
