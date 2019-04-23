@@ -1,10 +1,11 @@
 import React from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import { CheckoutProps } from './CheckoutProps';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import ContactData from './ContactData/ContactData';
 import { connect } from 'react-redux';
 import { BurgerBuilderState } from '../../store/burger-builder.state';
+import { AppState } from '../../store/app.state';
 
 class Checkout extends React.Component<CheckoutProps> {
 
@@ -17,27 +18,32 @@ class Checkout extends React.Component<CheckoutProps> {
   }
 
   render = () => {
+    let summary = <Redirect to="/" />
+    if (this.props.ingredients) {
+      summary = (
+        <React.Fragment>
+          <CheckoutSummary
+            ingredients={ this.props.ingredients }
+            cancelClicked={ this.checkoutCanceledHandler }
+            continueClicked={ this.checkoutContinueHandler }
+          />
+          <Route
+            path={ `${this.props.match!.url}/contact-data` }
+            component={ContactData}>
+          </Route>
+        </React.Fragment>
+      );
+    }
     return (
       <div>
-        <CheckoutSummary
-          ingredients={ this.props.ingredients }
-          cancelClicked={ this.checkoutCanceledHandler }
-          continueClicked={ this.checkoutContinueHandler }
-        />
-        {/* <Route path={`${this.props.match!.url}/contact-data`} component={ContactData}></Route> */ }
-        <Route
-          path={ `${this.props.match!.url}/contact-data` }
-          // render={ (props) => <ContactData totalPrice={ this.props.price } ingredients={ this.props.ingredients } {...props}></ContactData> }>
-          component={ContactData}>
-        </Route>
+        {summary}
       </div >
     );
   }
 }
 
-const mapStateToProps = (state: BurgerBuilderState) => ({
-  ingredients: state.ingredients!,
-  price: state.totalPrice,
+const mapStateToProps = (state: AppState) => ({
+  ingredients: state.burgerBuilder.ingredients!,
 })
 
 export default connect(mapStateToProps)(Checkout);

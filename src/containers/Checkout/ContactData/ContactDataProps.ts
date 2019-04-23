@@ -4,10 +4,15 @@ import { BurgerIngredientsMap } from '../../../components/Burger/BurgerIngredien
 export interface ContactDataStateProps {
   ingredients: BurgerIngredientsMap,
   totalPrice: number,
+  loading: boolean,
+}
+
+export interface ContactDataDispatchProps {
+  orderBurger: (orderData: any) => any;
 }
 
 export interface ContactDataOwnProps {
 }
 
-export interface ContactDataProps extends ContactDataStateProps, RouteChildrenProps {
+export interface ContactDataProps extends ContactDataStateProps, RouteChildrenProps, ContactDataDispatchProps, ContactDataOwnProps {
 }

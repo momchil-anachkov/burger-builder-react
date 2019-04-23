@@ -12,9 +12,11 @@ import { BurgerBuilderState as BurgerBuilderReduxState } from '../../store/burge
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { BurgerIngredientProps } from '../../components/Burger/BurgerIngredient/BurgerIngredientProps';
 import { Action, Dispatch } from 'redux';
-import { IngredientActions } from '../../store/actions/actionTypes';
+import { IngredientActions, AddIngredient, RemoveIngredient } from '../../store/actions/actionTypes';
 import { addIngredient, removeIngredient, initializeIngredients } from '../../store/actions/burgerBuilder';
 import orders from '../../axios-orders';
+import { ThunkAction } from 'redux-thunk';
+import { AppState } from '../../store/app.state';
 
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
@@ -106,15 +108,15 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
   }
 }
 
-const mapStateToProps = (state: BurgerBuilderReduxState) => {
+const mapStateToProps = (state: AppState) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    error: state.error
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error
   }
 }
 
-const mapDispatchToProps: MapDispatchToPropsFunction<BurgerBuilderDispatchProps, BurgerIngredientProps> = (dispatch: Dispatch<IngredientActions>) => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<BurgerBuilderDispatchProps, BurgerIngredientProps> = (dispatch: any) => ({
   // addIngredient: (ingredientType: BurgerIngredientType) =>  dispatch(new AddIngredient(ingredientType)),
   addIngredient: (ingredientType: BurgerIngredientType) => {
     dispatch(addIngredient(ingredientType));

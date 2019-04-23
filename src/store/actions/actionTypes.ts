@@ -6,33 +6,49 @@ export enum ActionTypes {
   ADD_INGREDIENT = 'ADD_INGREDIENT',
   REMOVE_INGREDIENT = 'REMOVE_INGREDIENT',
   SET_INGREDIENTS = 'SET_INGREDIENTS',
-  FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED',
+  FETCH_INGREDIENTS_FAIL = 'FETCH_INGREDIENTS_FAIL',
+  PURCHASE_BURGER_START = 'PURCHASE_BURGER_START',
+  PURCHASE_BURGER_SUCCESS = 'PURCHASE_BURGER_SUCCESS',
+  PURCHASE_BURGER_FAIL = 'PURCHASE_BURGER_FAIL',
 }
 
-export interface AddIngredient extends Action<string> {
-  type: ActionTypes.ADD_INGREDIENT;
+export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
   payload: BurgerIngredientType;
 }
 
-export interface RemoveIngredient extends Action<string> {
-  type: ActionTypes.REMOVE_INGREDIENT;
+export interface RemoveIngredient extends Action<ActionTypes.REMOVE_INGREDIENT> {
   payload: BurgerIngredientType;
 }
 
-export interface SetIngredients extends Action<string> {
-  type: ActionTypes.SET_INGREDIENTS;
+export interface SetIngredients extends Action<ActionTypes.SET_INGREDIENTS> {
   payload: BurgerBuilderIngredientsState;
 }
 
-export interface FetchIngredientsFailed extends Action<string> {
-  type: ActionTypes.FETCH_INGREDIENTS_FAILED,
+export interface FetchIngredientsFail extends Action<ActionTypes.FETCH_INGREDIENTS_FAIL> {
+}
+
+export interface PurchaseBurgerStart extends Action<ActionTypes.PURCHASE_BURGER_START> {
+}
+
+export interface PurchaseBurgerSuccess extends Action<ActionTypes.PURCHASE_BURGER_SUCCESS> {
+  payload: {
+    orderId: string,
+    orderData: any,
+  },
+}
+
+export interface PurchaseBurgerFail extends Action<ActionTypes.PURCHASE_BURGER_FAIL> {
+  payload: string,
 }
 
 export type IngredientActions = (
   AddIngredient |
   RemoveIngredient |
   SetIngredients |
-  FetchIngredientsFailed
+  FetchIngredientsFail |
+  PurchaseBurgerStart |
+  PurchaseBurgerSuccess |
+  PurchaseBurgerFail
 );
 
 // export default IngredientActions;
