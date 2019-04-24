@@ -8,15 +8,13 @@ import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Spinner from '../../components/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { BurgerBuilderProps, BurgerBuilderDispatchProps } from './BurgerBuilderProps';
-import { BurgerBuilderState as BurgerBuilderReduxState } from '../../store/burger-builder.state';
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { BurgerIngredientProps } from '../../components/Burger/BurgerIngredient/BurgerIngredientProps';
-import { Action, Dispatch } from 'redux';
-import { IngredientActions, AddIngredient, RemoveIngredient } from '../../store/actions/actionTypes';
+import { Dispatch } from 'redux';
 import { addIngredient, removeIngredient, initializeIngredients } from '../../store/actions/burgerBuilder';
 import orders from '../../axios-orders';
-import { ThunkAction } from 'redux-thunk';
 import { AppState } from '../../store/app.state';
+import { purchaseInit } from '../../store/actions';
 
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
@@ -36,14 +34,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
   }
 
   purchaseContinueHandler = () => {
-    // this.props.history.push('/checkout');
-    // const queryParams = Object.keys(this.state.ingredients!)
-    //   .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(`${this.state.ingredients![k]}`))
-    //   // .join('&');
-
-    // queryParams.push(`totalPrice=${this.props.totalPrice}`);
-    // const queryString = queryParams.join('&');
-
+    this.props.purchaseInit();
     this.props.history.push({
       pathname: '/checkout',
       // search: queryString
@@ -125,7 +116,10 @@ const mapDispatchToProps: MapDispatchToPropsFunction<BurgerBuilderDispatchProps,
     dispatch(removeIngredient(ingredientType));
   },
   initializeIngredients: () => {
-    dispatch(initializeIngredients())
+    dispatch(initializeIngredients());
+  },
+  purchaseInit: () => {
+    dispatch(purchaseInit())
   }
 });
 

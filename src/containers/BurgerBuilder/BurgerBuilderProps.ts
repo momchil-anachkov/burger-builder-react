@@ -12,4 +12,5 @@ export interface BurgerBuilderDispatchProps {
   addIngredient: (ingredientType: BurgerIngredientType) => void;
   removeIngredient: (ingredientType: BurgerIngredientType) => void;
   initializeIngredients: () => void;
+  purchaseInit: () => void;
 }

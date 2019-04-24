@@ -24,7 +24,7 @@ export const fetchIngredientsFail = (): FetchIngredientsFail => ({
   type: ActionTypes.FETCH_INGREDIENTS_FAIL
 });
 
-export const initializeIngredients = (): ThunkAction<void, {}, {}, SetIngredients | FetchIngredientsFail> => (dispatch) => {
+export const initializeIngredients = (): ThunkAction<any, {}, {}, SetIngredients | FetchIngredientsFail> => (dispatch) => {
   orders
     .get('/ingredients')
     .then((response) => dispatch(setIngredients(response.data)))

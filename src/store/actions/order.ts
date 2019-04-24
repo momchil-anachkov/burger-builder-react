@@ -1,4 +1,4 @@
-import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart } from './actionTypes';
+import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit } from './actionTypes';
 import orders from '../../axios-orders';
 import { ThunkAction } from 'redux-thunk';
 
@@ -30,3 +30,7 @@ export const purchaseBurger = (orderData: any): ThunkAction<void, {}, {}, Purcha
       dispatch(purchaseBurgerFail(error));
     });
 };
+
+export const purchaseInit = (): PurchaseInit => ({
+  type: ActionTypes.PURCHASE_INIT,
+});

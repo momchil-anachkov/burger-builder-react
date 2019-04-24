@@ -10,6 +10,7 @@ export enum ActionTypes {
   PURCHASE_BURGER_START = 'PURCHASE_BURGER_START',
   PURCHASE_BURGER_SUCCESS = 'PURCHASE_BURGER_SUCCESS',
   PURCHASE_BURGER_FAIL = 'PURCHASE_BURGER_FAIL',
+  PURCHASE_INIT = 'PURCHASE_INIT',
 }
 
 export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
@@ -39,6 +40,9 @@ export interface PurchaseBurgerSuccess extends Action<ActionTypes.PURCHASE_BURGE
 
 export interface PurchaseBurgerFail extends Action<ActionTypes.PURCHASE_BURGER_FAIL> {
   payload: string,
+}
+
+export interface PurchaseInit extends Action<ActionTypes.PURCHASE_INIT> {
 }
 
 export type IngredientActions = (

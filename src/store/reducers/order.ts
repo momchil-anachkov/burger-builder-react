@@ -1,12 +1,27 @@
-import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart } from '../actions';
+import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit } from '../actions';
+import { OrderState } from '../order.state';
 
 const initialState = {
   orders: [],
   loading: false,
+  purchased: false,
 }
 
-export const orderReducer = (state = initialState, action: PurchaseBurgerStart | PurchaseBurgerSuccess | PurchaseBurgerFail) => {
+export const orderReducer = (
+  state: OrderState = initialState,
+  action:
+    PurchaseInit |
+    PurchaseBurgerStart |
+    PurchaseBurgerSuccess |
+    PurchaseBurgerFail
+  ): OrderState => {
   switch (action.type) {
+    case ActionTypes.PURCHASE_INIT: 
+      return {
+        ...state,
+        purchased: false
+      }
+
     case ActionTypes.PURCHASE_BURGER_START:
       return {
         ...state,
@@ -16,6 +31,7 @@ export const orderReducer = (state = initialState, action: PurchaseBurgerStart |
       return {
         ...state,
         loading: false,
+        purchased: true,
         orders: state.orders.concat({
           ...action.payload.orderData,
           id: action.payload.orderId,
