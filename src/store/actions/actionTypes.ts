@@ -7,10 +7,16 @@ export enum ActionTypes {
   REMOVE_INGREDIENT = 'REMOVE_INGREDIENT',
   SET_INGREDIENTS = 'SET_INGREDIENTS',
   FETCH_INGREDIENTS_FAIL = 'FETCH_INGREDIENTS_FAIL',
+
   PURCHASE_BURGER_START = 'PURCHASE_BURGER_START',
   PURCHASE_BURGER_SUCCESS = 'PURCHASE_BURGER_SUCCESS',
   PURCHASE_BURGER_FAIL = 'PURCHASE_BURGER_FAIL',
+
   PURCHASE_INIT = 'PURCHASE_INIT',
+
+  FETCH_ORDERS_START = 'FETCH_ORDERS_START',
+  FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS',
+  FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED',
 }
 
 export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
@@ -42,6 +48,17 @@ export interface PurchaseBurgerFail extends Action<ActionTypes.PURCHASE_BURGER_F
   payload: string,
 }
 
+export interface FetchOrdersStart extends Action<ActionTypes.FETCH_ORDERS_START> {
+}
+
+export interface FetchOrdersSuccess extends Action<ActionTypes.FETCH_ORDERS_SUCCESS> {
+  payload: any[],
+}
+
+export interface FetchOrdersFailed extends Action<ActionTypes.FETCH_ORDERS_FAILED> {
+  payload: Error,
+}
+
 export interface PurchaseInit extends Action<ActionTypes.PURCHASE_INIT> {
 }
 
@@ -52,7 +69,10 @@ export type IngredientActions = (
   FetchIngredientsFail |
   PurchaseBurgerStart |
   PurchaseBurgerSuccess |
-  PurchaseBurgerFail
+  PurchaseBurgerFail |
+  FetchOrdersStart |
+  FetchOrdersSuccess |
+  FetchOrdersFailed
 );
 
 // export default IngredientActions;

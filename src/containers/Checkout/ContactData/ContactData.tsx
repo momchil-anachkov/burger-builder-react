@@ -12,6 +12,7 @@ import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import { purchaseBurger } from '../../../store/actions';
 import { OrderState } from '../../../store/order.state';
 import { AppState } from '../../../store/app.state';
+import { ThunkDispatch } from 'redux-thunk';
 
 class ContactData extends React.Component<ContactDataProps, any> {
   state: any = {
@@ -206,7 +207,7 @@ const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProp
   loading: state.order.loading
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, ContactDataOwnProps> = (dispatch: any) => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, ContactDataOwnProps> = (dispatch: Function) => ({
   orderBurger: (orderData: any) => dispatch(purchaseBurger(orderData))
 });
 

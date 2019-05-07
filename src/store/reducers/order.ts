@@ -1,4 +1,4 @@
-import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit } from '../actions';
+import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit, FetchOrdersStart, FetchOrdersSuccess, FetchOrdersFailed } from '../actions';
 import { OrderState } from '../order.state';
 
 const initialState = {
@@ -13,7 +13,10 @@ export const orderReducer = (
     PurchaseInit |
     PurchaseBurgerStart |
     PurchaseBurgerSuccess |
-    PurchaseBurgerFail
+    PurchaseBurgerFail |
+    FetchOrdersStart |
+    FetchOrdersSuccess |
+    FetchOrdersFailed
   ): OrderState => {
   switch (action.type) {
     case ActionTypes.PURCHASE_INIT: 
@@ -38,6 +41,22 @@ export const orderReducer = (
         })
       };
     case ActionTypes.PURCHASE_BURGER_FAIL:
+      return {
+        ...state,
+        loading: false,
+      };
+    case ActionTypes.FETCH_ORDERS_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ActionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload,
+        loading: false,
+      };
+    case ActionTypes.FETCH_ORDERS_FAILED:
       return {
         ...state,
         loading: false,

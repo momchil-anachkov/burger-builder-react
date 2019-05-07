@@ -4,7 +4,7 @@ import Layout from './hoc/Layout/Layout';
 import Checkout from './containers/Checkout/Checkout';
 import { Switch, Route } from 'react-router';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
-import { Orders } from './containers/Orders/Orders';
+import Orders from './containers/Orders/Orders';
 
 class App extends Component {
 	state = {

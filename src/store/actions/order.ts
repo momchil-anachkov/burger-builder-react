@@ -1,10 +1,19 @@
-import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit } from './actionTypes';
+import {
+  ActionTypes,
+  PurchaseBurgerSuccess,
+  PurchaseBurgerFail,
+  PurchaseBurgerStart,
+  PurchaseInit,
+  FetchOrdersSuccess,
+  FetchOrdersFailed,
+  FetchOrdersStart
+} from './actionTypes';
 import orders from '../../axios-orders';
 import { ThunkAction } from 'redux-thunk';
 
 export const purchaseBurgerStart = (): PurchaseBurgerStart => ({
-  type: ActionTypes.PURCHASE_BURGER_START,
-})
+  type: ActionTypes.PURCHASE_BURGER_START
+});
 
 export const purchaseBurgerSuccess = (id: string, orderData: any): PurchaseBurgerSuccess => ({
   type: ActionTypes.PURCHASE_BURGER_SUCCESS,
@@ -19,7 +28,9 @@ export const purchaseBurgerFail = (error: string): PurchaseBurgerFail => ({
   payload: error
 });
 
-export const purchaseBurger = (orderData: any): ThunkAction<void, {}, {}, PurchaseBurgerStart | PurchaseBurgerSuccess | PurchaseBurgerFail> => (dispatch) => {
+export const purchaseBurger = (
+  orderData: any
+): ThunkAction<void, {}, {}, PurchaseBurgerStart | PurchaseBurgerSuccess | PurchaseBurgerFail> => (dispatch) => {
   dispatch(purchaseBurgerStart());
   orders
     .post('/orders', orderData)
@@ -32,5 +43,35 @@ export const purchaseBurger = (orderData: any): ThunkAction<void, {}, {}, Purcha
 };
 
 export const purchaseInit = (): PurchaseInit => ({
-  type: ActionTypes.PURCHASE_INIT,
+  type: ActionTypes.PURCHASE_INIT
 });
+
+export const fetchOrdersStart = (): FetchOrdersStart => ({
+  type: ActionTypes.FETCH_ORDERS_START
+});
+
+export const fetchOrdersSuccess = (orders: any[]): FetchOrdersSuccess => ({
+  type: ActionTypes.FETCH_ORDERS_SUCCESS,
+  payload: orders
+});
+
+export const fetchOrdersFailed = (error: Error): FetchOrdersFailed => ({
+  type: ActionTypes.FETCH_ORDERS_FAILED,
+  payload: error
+});
+
+export const fetchOrders = () => (dispatch: Function) => {
+  dispatch(fetchOrdersStart());
+  orders
+    .get('/orders')
+    .then((response) => {
+      const orders = Object.entries(response.data).map(([ key, value ]: [string, any]) => {
+        return {
+          ...value,
+          id: key
+        };
+      });
+      dispatch(fetchOrdersSuccess(orders));
+    })
+    .catch((error) => dispatch(fetchOrdersFailed(error)));
+};
