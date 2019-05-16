@@ -51,12 +51,12 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 
     let modalContent;
 
-    let burger = <Spinner />
+    let burger = <Spinner />;
 
     let purchasable
 
     if (this.props.error) {
-      burger = <p>Ingredients couldn't be loaded</p>
+      burger = <p>Ingredients couldn't be loaded</p>;
     }
     if (this.props.ingredients) {
       purchasable = this.calculatePurchasable(this.props.ingredients);
@@ -75,7 +75,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
             ingredientRemoved={ this.props.removeIngredient }
             orderNowClicked={ this.purchaseHandler }
           />
-        </React.Fragment>
+        </React.Fragment>;
     }
 
     if (this.props.ingredients) {
@@ -85,7 +85,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
           totalPrice={ this.props.totalPrice }
           cancelOrderClicked={ this.purchaseCanceledHandler }
           continueOrderClicked={ this.purchaseContinueHandler }
-        />
+        />;
     }
 
     return (
@@ -95,7 +95,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
         </Modal>
         { burger }
       </React.Fragment>
-    )
+    );
   }
 }
 
