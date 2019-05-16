@@ -15,6 +15,11 @@ class Layout extends React.Component<{}, LayoutState> {
 
   sideDrawerBackdropClickedHandler = () => {
     this.setState({ sideDrawerShown: false })
+    this.sum(3,7);
+  }
+
+  sum(a: number, b: number) {
+    return a+b;
   }
 
   render = () => {

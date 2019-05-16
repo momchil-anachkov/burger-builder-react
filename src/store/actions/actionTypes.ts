@@ -75,4 +75,3 @@ export type IngredientActions = (
   FetchOrdersFailed
 );
 
-// export default IngredientActions;

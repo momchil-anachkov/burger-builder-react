@@ -14,9 +14,9 @@ class Orders extends React.Component<OrdersProps> {
   }
 
   render = () => {
-    let orders: any = <Spinner />;
+    let ordersComponent: any = <Spinner />;
     if (!this.props.loading) {
-      orders = this.props.orders.map((order: any) => (
+      ordersComponent = this.props.orders.map((order: any) => (
         <Order
           key={ order.id }
           ingredients={ order.ingredients }
@@ -26,14 +26,13 @@ class Orders extends React.Component<OrdersProps> {
     }
     return (
       <div>
-        {orders}
+        {ordersComponent}
       </div>
     );
   }
 }
 
 const mapStateToProps: MapStateToProps<OrdersStateProps, OrdersOwnProps, AppState> = (state: AppState) => ({
-// const mapStateToProps = (state: AppState) => ({
     loading: state.order.loading,
     orders: state.order.orders,
 })

@@ -1,6 +1,7 @@
 import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
-import { BurgerBuilderState } from '../burger-builder.state';
+import { BurgerBuilderState, BurgerBuilderIngredients } from '../burger-builder.state';
 import { IngredientActions, ActionTypes } from '../actions/actionTypes';
+import { updateObject } from '../utility';
 
 const initialState = {
     ingredients: null,
@@ -21,43 +22,41 @@ const INGREDIENT_PRICES: {
 const burgerBuilderReducer = (state: BurgerBuilderState = initialState, action: IngredientActions): BurgerBuilderState => {
 
   switch (action.type) {
-    case ActionTypes.ADD_INGREDIENT:
-      return {
-        ...state,
-        ingredients: { 
-          ...state.ingredients,
-          [action.payload]: state.ingredients![action.payload] + 1,
-        },
+    case ActionTypes.ADD_INGREDIENT: {
+      const updatedIngredient = { [action.payload]: state.ingredients![action.payload] + 1 };
+      const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+      const updatedState = {
+        ingredients: updatedIngredients,
         totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
       };
+      return updateObject(state, updatedState);
+    }
 
-    case ActionTypes.REMOVE_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.payload]: state.ingredients![action.payload] - 1,
-        },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload],
+    case ActionTypes.REMOVE_INGREDIENT: {
+      const updatedIngredient = { [action.payload]: state.ingredients![action.payload] - 1 };
+      const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
+      const updatedState = {
+        ingredients: updatedIngredients,
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload],
       };
+      return updateObject(state, updatedState);
+    }
 
     case ActionTypes.SET_INGREDIENTS:
-      return {
-        ...state,
+      return updateObject(state, {
         ingredients: action.payload,
         totalPrice: 4,
-        error: false,
-      }
+        error: false
+      });
 
     case ActionTypes.FETCH_INGREDIENTS_FAIL:
-      return {
-        ...state,
-        error: true,
-      }
+      return updateObject(state, {
+        error: true
+      });
 
     default:
       return state;
   }
-}
+};
 
 export default burgerBuilderReducer;
