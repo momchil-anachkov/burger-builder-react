@@ -1,10 +1,13 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import { ButtonType } from '../../components/UI/Button/ButtonProps';
 import classes from './Auth.module.scss';
+import { AuthDispatchProps, AuthOwnProps, AuthProps, AuthStateProps } from './Auth.props';
+import { auth } from '../../store/actions/auth';
+import { MapDispatchToPropsFunction, MapStateToPropsFactory, connect, MapStateToProps } from 'react-redux';
 
-class Auth extends React.Component {
+class Auth extends React.Component<AuthProps> {
   state: any = {
     controls: {
       email: {
@@ -67,7 +70,7 @@ class Auth extends React.Component {
     }
 
     return isValid;
-  }
+  };
 
   inputChangedHandler = (inputIdentifier: string, event: React.ChangeEvent<HTMLInputElement>) => {
     const updatedControls = {
@@ -76,16 +79,21 @@ class Auth extends React.Component {
         ...this.state.controls[inputIdentifier],
         value: event.target.value,
         valid: this.checkValidity(this.state.controls[inputIdentifier].validation, event.target.value),
-        touched: true,
+        touched: true
       }
-    }
+    };
     this.setState({ controls: updatedControls });
     console.log('input changed');
-  }
+  };
 
-  formSubmittedHandler = () => {
+  formSubmittedHandler = (event: FormEvent) => {
+    event.preventDefault();
+    this.props.auth(
+      this.state.controls.email.value,
+      this.state.controls.password.value,
+    );
     console.log('form submitted');
-  }
+  };
 
   render = () => {
     const formElementsArray = Object.keys(this.state.controls)
@@ -109,13 +117,21 @@ class Auth extends React.Component {
 
     return (
       <div className={classes.Auth}>
-        <form>
-          { formElementsArray }
-          <Button buttonType={ButtonType.SUCCESS} clicked={this.formSubmittedHandler}>Submit</Button>
+        <form onSubmit={this.formSubmittedHandler}>
+          {formElementsArray}
+          <Button buttonType={ButtonType.SUCCESS} clicked={this.formSubmittedHandler}>
+            Submit
+          </Button>
         </form>
       </div>
     );
   };
 }
 
-export default Auth;
+const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, any> = (state: any, ownProps: AuthOwnProps) => ({});
+
+const mapDispatchToProps: MapDispatchToPropsFunction<AuthDispatchProps, AuthOwnProps> = (dispatch: Function) => ({
+  auth: (email: string, password: string) => dispatch(auth(email, password))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

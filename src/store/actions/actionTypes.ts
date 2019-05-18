@@ -17,6 +17,10 @@ export enum ActionTypes {
   FETCH_ORDERS_START = 'FETCH_ORDERS_START',
   FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS',
   FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED',
+
+  AUTH_START = 'AUTH_START',
+  AUTH_SUCCESS = 'AUTH_SUCCESS',
+  AUTH_FAIL = 'AUTH_FAIL',
 }
 
 export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
@@ -62,6 +66,17 @@ export interface FetchOrdersFailed extends Action<ActionTypes.FETCH_ORDERS_FAILE
 export interface PurchaseInit extends Action<ActionTypes.PURCHASE_INIT> {
 }
 
+export interface AuthStart extends Action<ActionTypes.AUTH_START> {
+}
+
+export interface AuthSuccess extends Action<ActionTypes.AUTH_SUCCESS> {
+  payload: any,
+}
+
+export interface AuthFail extends Action<ActionTypes.AUTH_FAIL> {
+  payload: Error,
+}
+
 export type IngredientActions = (
   AddIngredient |
   RemoveIngredient |
@@ -75,3 +90,8 @@ export type IngredientActions = (
   FetchOrdersFailed
 );
 
+export type AuthActions = (
+  AuthStart |
+  AuthSuccess |
+  AuthFail
+);
