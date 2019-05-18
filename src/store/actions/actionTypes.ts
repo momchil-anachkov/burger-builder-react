@@ -70,7 +70,10 @@ export interface AuthStart extends Action<ActionTypes.AUTH_START> {
 }
 
 export interface AuthSuccess extends Action<ActionTypes.AUTH_SUCCESS> {
-  payload: any,
+  payload: {
+    idToken: string,
+    userId: string,
+  },
 }
 
 export interface AuthFail extends Action<ActionTypes.AUTH_FAIL> {

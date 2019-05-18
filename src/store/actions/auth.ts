@@ -38,7 +38,10 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
     .then((response) => {
       // dispatch
       console.log(response);
-      dispatch(authSuccess(response.data))
+      dispatch(authSuccess({
+        userId: response.data.localId,
+        idToken: response.data.idToken,
+      }))
     })
     .catch((error: Error) => {
       console.log(error);

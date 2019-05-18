@@ -57,9 +57,9 @@ export const fetchOrders = () => (dispatch: Function) => {
           return {
             ...value,
             id: key,
-          }
+          };
         });
-        dispatch(fetchOrdersSuccess(ordersObject))
+        dispatch(fetchOrdersSuccess(ordersObject));
       })
       .catch((error) => dispatch(fetchOrdersFailed(error)));
 }
