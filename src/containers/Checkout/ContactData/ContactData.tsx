@@ -2,7 +2,12 @@ import React from 'react';
 import Button from '../../../components/UI/Button/Button';
 import { ButtonType } from '../../../components/UI/Button/ButtonProps';
 import classes from './ContactData.module.scss';
-import { ContactDataProps, ContactDataStateProps, ContactDataOwnProps, ContactDataDispatchProps } from './ContactDataProps';
+import {
+  ContactDataProps,
+  ContactDataStateProps,
+  ContactDataOwnProps,
+  ContactDataDispatchProps
+} from './ContactDataProps';
 import orders from '../../../axios-orders';
 import Spinner from '../../../components/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
@@ -98,8 +103,7 @@ class ContactData extends React.Component<ContactDataProps, any> {
         validation: {},
         valid: true,
         touched: false
-      },
-
+      }
     }
   };
 
@@ -121,17 +125,34 @@ class ContactData extends React.Component<ContactDataProps, any> {
 
   checkValidity = (rules: any, value: any) => {
     let isValid = true;
+    if (!rules) {
+      return true;
+    }
+
     if (rules.required) {
       isValid = value.trim() !== '' && isValid;
     }
+
     if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
     }
+
     if (rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
     }
+
+    if (rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value) && isValid;
+    }
+
+    if (rules.isNumeric) {
+      const pattern = /^\d+$/;
+      isValid = pattern.test(value) && isValid;
+    }
+
     return isValid;
-  };
+  }
 
   inputChangedHandler = (inputIdentifier: string, event: any) => {
     let inputIsValid = true;
@@ -207,7 +228,9 @@ const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProp
   loading: state.order.loading
 });
 
-const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, ContactDataOwnProps> = (dispatch: Function) => ({
+const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, ContactDataOwnProps> = (
+  dispatch: Function
+) => ({
   orderBurger: (orderData: any) => dispatch(purchaseBurger(orderData))
 });
 
