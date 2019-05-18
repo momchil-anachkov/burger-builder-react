@@ -38,7 +38,8 @@ class Auth extends React.Component<AuthProps> {
         valid: false,
         touched: false
       }
-    }
+    },
+    isSignUp: true,
   };
 
   checkValidity = (rules: any, value: any) => {
@@ -91,9 +92,16 @@ class Auth extends React.Component<AuthProps> {
     this.props.auth(
       this.state.controls.email.value,
       this.state.controls.password.value,
+      this.state.isSignUp,
     );
     console.log('form submitted');
   };
+
+  switchAuthModeHandler = (event: MouseEvent) => {
+    this.setState((previousState: any) => ({
+      isSignUp: !previousState.isSignUp,
+    }));
+  }
 
   render = () => {
     const formElementsArray = Object.keys(this.state.controls)
@@ -115,6 +123,8 @@ class Auth extends React.Component<AuthProps> {
         />
       ));
 
+    let switchButtonLabel = this.state.isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
+
     return (
       <div className={classes.Auth}>
         <form onSubmit={this.formSubmittedHandler}>
@@ -123,6 +133,7 @@ class Auth extends React.Component<AuthProps> {
             Submit
           </Button>
         </form>
+        <Button buttonType={ButtonType.DANGER} clicked={this.switchAuthModeHandler}>{switchButtonLabel}</Button>
       </div>
     );
   };
@@ -131,7 +142,7 @@ class Auth extends React.Component<AuthProps> {
 const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, any> = (state: any, ownProps: AuthOwnProps) => ({});
 
 const mapDispatchToProps: MapDispatchToPropsFunction<AuthDispatchProps, AuthOwnProps> = (dispatch: Function) => ({
-  auth: (email: string, password: string) => dispatch(auth(email, password))
+  auth: (email: string, password: string, isSignUp) => dispatch(auth(email, password, isSignUp))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

@@ -2,7 +2,7 @@ export interface AuthStateProps {
 }
 
 export interface AuthDispatchProps {
-  auth: (username: string, password: string) => void
+  auth: (username: string, password: string, isSignUp: boolean) => void
 }
 
 export interface AuthOwnProps {
