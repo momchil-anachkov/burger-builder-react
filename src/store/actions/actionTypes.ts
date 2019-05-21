@@ -21,6 +21,7 @@ export enum ActionTypes {
   AUTH_START = 'AUTH_START',
   AUTH_SUCCESS = 'AUTH_SUCCESS',
   AUTH_FAIL = 'AUTH_FAIL',
+  AUTH_LOGOUT = 'AUTH_LOGOUT',
 }
 
 export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
@@ -80,6 +81,9 @@ export interface AuthFail extends Action<ActionTypes.AUTH_FAIL> {
   payload: Error,
 }
 
+export interface AuthLogout extends Action<ActionTypes.AUTH_LOGOUT> {
+}
+
 export type IngredientActions = (
   AddIngredient |
   RemoveIngredient |
@@ -96,5 +100,6 @@ export type IngredientActions = (
 export type AuthActions = (
   AuthStart |
   AuthSuccess |
-  AuthFail
+  AuthFail |
+  AuthLogout
 );

@@ -1,4 +1,4 @@
-import { AuthActions, ActionTypes, AuthStart, AuthSuccess, AuthFail } from '../actions';
+import { AuthActions, ActionTypes, AuthStart, AuthSuccess, AuthFail, AuthLogout } from '../actions';
 import { updateObject } from '../utility';
 import { AuthState } from '../auth.state';
 
@@ -9,14 +9,14 @@ const initialState: AuthState = {
   loading: false
 };
 
-const authStart = (state: AuthState, action: AuthStart) => {
+const authStart = (state: AuthState, action: AuthStart): AuthState => {
   return updateObject(state, {
     loading: true,
     error: null,
   });
 };
 
-const authSuccess = (state: AuthState, action: AuthSuccess) => {
+const authSuccess = (state: AuthState, action: AuthSuccess): AuthState => {
   return updateObject(state, {
     loading: false,
     error: null,
@@ -25,7 +25,7 @@ const authSuccess = (state: AuthState, action: AuthSuccess) => {
   });
 };
 
-const authFail = (state: AuthState, action: AuthFail) => {
+const authFail = (state: AuthState, action: AuthFail): AuthState => {
   return updateObject(state, {
     loading: false,
     error: action.payload,
@@ -34,7 +34,14 @@ const authFail = (state: AuthState, action: AuthFail) => {
   });
 };
 
-export const authReducer = (state: AuthState = initialState, action: AuthActions) => {
+const authLogout = (state: AuthState, action: AuthLogout): AuthState => {
+  return updateObject(state, {
+    userId: null,
+    token: null,
+  })
+}
+
+export const authReducer = (state: AuthState = initialState, action: AuthActions): AuthState => {
   switch (action.type) {
     case ActionTypes.AUTH_START:
       return authStart(state, action);
@@ -44,6 +51,9 @@ export const authReducer = (state: AuthState = initialState, action: AuthActions
 
     case ActionTypes.AUTH_FAIL:
       return authFail(state, action);
+
+    case ActionTypes.AUTH_LOGOUT:
+      return authLogout(state, action);
 
     default:
       return state;

@@ -1,4 +1,4 @@
-import { AuthStart, ActionTypes, AuthSuccess, AuthFail } from './actionTypes';
+import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthLogout } from './actionTypes';
 import axios from 'axios';
 import { API_KEY } from '../../keys/firebase';
 
@@ -15,6 +15,16 @@ export const authFail = (error: Error): AuthFail  => ({
   type: ActionTypes.AUTH_FAIL,
   payload: error,
 });
+
+export const authLogout = (): AuthLogout => ({
+  type: ActionTypes.AUTH_LOGOUT,
+})
+
+export const checkAuthTimeout = (expiresIn: number) => (dispatch: Function) => {
+  setTimeout(() => {
+    dispatch(authLogout());
+  }, expiresIn * 1000);
+}
 
 export const auth = (email: string, password: string, isSignup: boolean) => (dispatch: Function) => {
   dispatch(authStart());
@@ -41,7 +51,8 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
       dispatch(authSuccess({
         userId: response.data.localId,
         idToken: response.data.idToken,
-      }))
+      }));
+      dispatch(checkAuthTimeout(response.data.expiresIn));
     })
     .catch((error) => {
       console.log(error);
