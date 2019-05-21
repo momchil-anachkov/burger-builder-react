@@ -6,6 +6,8 @@ import classes from './Auth.module.scss';
 import { AuthDispatchProps, AuthOwnProps, AuthProps, AuthStateProps } from './Auth.props';
 import { auth } from '../../store/actions/auth';
 import { MapDispatchToPropsFunction, MapStateToPropsFactory, connect, MapStateToProps } from 'react-redux';
+import { AppState } from '../../store/app.state';
+import Spinner from '../../components/Spinner/Spinner';
 
 class Auth extends React.Component<AuthProps> {
   state: any = {
@@ -39,7 +41,7 @@ class Auth extends React.Component<AuthProps> {
         touched: false
       }
     },
-    isSignUp: true,
+    isSignUp: true
   };
 
   checkValidity = (rules: any, value: any) => {
@@ -89,57 +91,73 @@ class Auth extends React.Component<AuthProps> {
 
   formSubmittedHandler = (event: FormEvent) => {
     event.preventDefault();
-    this.props.auth(
-      this.state.controls.email.value,
-      this.state.controls.password.value,
-      this.state.isSignUp,
-    );
+    this.props.auth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
     console.log('form submitted');
   };
 
   switchAuthModeHandler = (event: MouseEvent) => {
     this.setState((previousState: any) => ({
-      isSignUp: !previousState.isSignUp,
+      isSignUp: !previousState.isSignUp
     }));
-  }
+  };
 
   render = () => {
-    const formElementsArray = Object.keys(this.state.controls)
-      .map((key) => ({
-        id: key,
-        config: this.state.controls[key]
-      }))
-      .map((item) => (
-        <Input
-          key={item.id}
-          label={item.config.elementConfig.placeholder}
-          elementType={item.config.elementType}
-          elementConfig={item.config.elementConfig}
-          value={item.config.value}
-          invalid={!item.config.valid}
-          shouldValidate={!!item.config.validation}
-          touched={item.config.touched}
-          changed={this.inputChangedHandler.bind(this, item.id)}
-        />
-      ));
+    let form = <Spinner />;
 
-    let switchButtonLabel = this.state.isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
+    if (!this.props.loading) {
+      let formElements = Object.keys(this.state.controls)
+        .map((key) => ({
+          id: key,
+          config: this.state.controls[key]
+        }))
+        .map((item) => (
+          <Input
+            key={item.id}
+            label={item.config.elementConfig.placeholder}
+            elementType={item.config.elementType}
+            elementConfig={item.config.elementConfig}
+            value={item.config.value}
+            invalid={!item.config.valid}
+            shouldValidate={!!item.config.validation}
+            touched={item.config.touched}
+            changed={this.inputChangedHandler.bind(this, item.id)}
+          />
+        ));
+
+      form = <React.Fragment>{formElements}</React.Fragment>
+    }
+
+    const switchButtonLabel = this.state.isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
+
+    let errorMessage = null;
+    if (this.props.error) {
+      errorMessage = this.props.error.message;
+    }
 
     return (
       <div className={classes.Auth}>
+        {errorMessage}
         <form onSubmit={this.formSubmittedHandler}>
-          {formElementsArray}
+          {form}
           <Button buttonType={ButtonType.SUCCESS} clicked={this.formSubmittedHandler}>
             Submit
           </Button>
         </form>
-        <Button buttonType={ButtonType.DANGER} clicked={this.switchAuthModeHandler}>{switchButtonLabel}</Button>
+        <Button buttonType={ButtonType.DANGER} clicked={this.switchAuthModeHandler}>
+          {switchButtonLabel}
+        </Button>
       </div>
     );
   };
 }
 
-const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, any> = (state: any, ownProps: AuthOwnProps) => ({});
+const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, any> = (
+  state: AppState,
+  ownProps: AuthOwnProps
+) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+});
 
 const mapDispatchToProps: MapDispatchToPropsFunction<AuthDispatchProps, AuthOwnProps> = (dispatch: Function) => ({
   auth: (email: string, password: string, isSignUp) => dispatch(auth(email, password, isSignUp))

@@ -1,4 +1,6 @@
 export interface AuthStateProps {
+  loading: boolean;
+  error: null | { message: string };
 }
 
 export interface AuthDispatchProps {

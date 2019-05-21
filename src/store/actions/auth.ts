@@ -43,8 +43,8 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
         idToken: response.data.idToken,
       }))
     })
-    .catch((error: Error) => {
+    .catch((error) => {
       console.log(error);
-      dispatch(authFail(error))
+      dispatch(authFail(error.response.data.error))
     });
 }

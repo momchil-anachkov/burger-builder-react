@@ -53,7 +53,7 @@ class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderSta
 
     let burger = <Spinner />;
 
-    let purchasable
+    let purchasable;
 
     if (this.props.error) {
       burger = <p>Ingredients couldn't be loaded</p>;
