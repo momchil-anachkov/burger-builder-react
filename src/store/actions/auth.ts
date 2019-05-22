@@ -40,7 +40,6 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
     url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${API_KEY}`;
   }
 
-
   axios.post(
     url,
     authData,
