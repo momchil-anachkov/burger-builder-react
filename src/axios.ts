@@ -1,15 +1,20 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { store } from './store/app.store';
 
-axios.defaults.baseURL = 'http://localhost:8080';
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:8080'
+});
 
-axios.interceptors.request.use((config: AxiosRequestConfig) => {
+axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
   console.log(config);
   const modifiedConfig: AxiosRequestConfig = {
     ...config,
-    params: store.getState().auth.token,
+    params: {
+      auth: store.getState().auth.token,
+    },
   }
   return modifiedConfig;
 });
 
-export default axios;
+export default axiosInstance;

@@ -1,6 +1,5 @@
 import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthLogout } from './actionTypes';
-import axios from 'axios';
-import { API_KEY } from '../../keys/firebase';
+import axiosInstance from '../../axios';
 
 export const authStart = (): AuthStart  => ({
   type: ActionTypes.AUTH_START,
@@ -34,13 +33,13 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
     returnSecureToken: true,
   }
 
-  let url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${API_KEY}`;
+  let url = `/authentication/signup`;
 
   if (!isSignup) {
-    url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${API_KEY}`;
+    url = `/authentication/signin`;
   }
 
-  axios.post(
+  axiosInstance.post(
     url,
     authData,
   )

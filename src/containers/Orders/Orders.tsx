@@ -1,12 +1,12 @@
 import React from 'react';
 import Order from '../../components/Order/Order';
-import orders from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { AppState } from '../../store/app.state';
 import { MapStateToProps, MapDispatchToPropsFunction, connect } from 'react-redux';
 import { OrdersStateProps, OrdersOwnProps, OrdersProps, OrdersDispatchProps } from './OrdersProps';
 import { fetchOrders } from '../../store/actions';
 import Spinner from '../../components/Spinner/Spinner';
+import axiosInstance from '../../axios';
 
 class Orders extends React.Component<OrdersProps> {
   componentDidMount() {
@@ -49,7 +49,7 @@ export default connect(
 )(
   withErrorHandler(
     Orders,
-    orders
+    axiosInstance
   )
 );
 // export default (withErrorHandler(Orders, orders));

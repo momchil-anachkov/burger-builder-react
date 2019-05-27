@@ -8,7 +8,6 @@ import {
   ContactDataOwnProps,
   ContactDataDispatchProps
 } from './ContactDataProps';
-import orders from '../../../axios-orders';
 import Spinner from '../../../components/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import { MapDispatchToPropsFunction, MapStateToProps, connect, MapDispatchToProps } from 'react-redux';
@@ -18,6 +17,7 @@ import { purchaseBurger } from '../../../store/actions';
 import { OrderState } from '../../../store/order.state';
 import { AppState } from '../../../store/app.state';
 import { ThunkDispatch } from 'redux-thunk';
+import axiosInstance from '../../../axios';
 
 class ContactData extends React.Component<ContactDataProps, any> {
   state: any = {
@@ -234,4 +234,4 @@ const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, C
   orderBurger: (orderData: any) => dispatch(purchaseBurger(orderData))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, orders));
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axiosInstance));

@@ -10,11 +10,10 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import { BurgerBuilderProps, BurgerBuilderDispatchProps } from './BurgerBuilderProps';
 import { MapDispatchToPropsFunction, connect } from 'react-redux';
 import { BurgerIngredientProps } from '../../components/Burger/BurgerIngredient/BurgerIngredientProps';
-import { Dispatch } from 'redux';
 import { addIngredient, removeIngredient, initializeIngredients } from '../../store/actions/burgerBuilder';
-import orders from '../../axios-orders';
 import { AppState } from '../../store/app.state';
 import { purchaseInit } from '../../store/actions';
+import axiosInstance from '../../axios';
 
 class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
@@ -129,6 +128,6 @@ export default connect(
 )(
   withErrorHandler(
     BurgerBuilder,
-    orders
+    axiosInstance
   )
 );
