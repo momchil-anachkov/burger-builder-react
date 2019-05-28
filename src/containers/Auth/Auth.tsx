@@ -8,6 +8,7 @@ import { auth } from '../../store/actions/auth';
 import { MapDispatchToPropsFunction, MapStateToPropsFactory, connect, MapStateToProps } from 'react-redux';
 import { AppState } from '../../store/app.state';
 import Spinner from '../../components/Spinner/Spinner';
+import { Redirect } from 'react-router';
 
 class Auth extends React.Component<AuthProps> {
   state: any = {
@@ -124,7 +125,14 @@ class Auth extends React.Component<AuthProps> {
           />
         ));
 
-      form = <React.Fragment>{formElements}</React.Fragment>
+      form = (
+        <form onSubmit={this.formSubmittedHandler}>
+          {formElements}
+          <Button buttonType={ButtonType.SUCCESS} clicked={this.formSubmittedHandler}>
+            Submit
+          </Button>
+        </form>
+      );
     }
 
     const switchButtonLabel = this.state.isSignUp ? 'Switch to Sign In' : 'Switch to Sign Up';
@@ -134,15 +142,16 @@ class Auth extends React.Component<AuthProps> {
       errorMessage = this.props.error.message;
     }
 
+    let authenticatedRedirect = null;
+    if (this.props.isAuthenticated) {
+      authenticatedRedirect = <Redirect to="/"></Redirect>
+    }
+
     return (
       <div className={classes.Auth}>
+        {authenticatedRedirect}
         {errorMessage}
-        <form onSubmit={this.formSubmittedHandler}>
-          {form}
-          <Button buttonType={ButtonType.SUCCESS} clicked={this.formSubmittedHandler}>
-            Submit
-          </Button>
-        </form>
+        {form}
         <Button buttonType={ButtonType.DANGER} clicked={this.switchAuthModeHandler}>
           {switchButtonLabel}
         </Button>
@@ -151,12 +160,12 @@ class Auth extends React.Component<AuthProps> {
   };
 }
 
-const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, any> = (
+const mapStateToProps: MapStateToProps<AuthStateProps, AuthOwnProps, AppState> = (
   state: AppState,
-  ownProps: AuthOwnProps
 ) => ({
   loading: state.auth.loading,
   error: state.auth.error,
+  isAuthenticated: state.auth.token !== null,
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<AuthDispatchProps, AuthOwnProps> = (dispatch: Function) => ({

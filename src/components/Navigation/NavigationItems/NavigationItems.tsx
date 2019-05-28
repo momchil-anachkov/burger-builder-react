@@ -4,7 +4,7 @@ import NavigationItem from './NavigationItem/NavigationItem';
 import { NavigationItemsProps } from './NavigationItems.props';
 
 const NavigationItems = (props: NavigationItemsProps) => {
-  let authNavigationItem = <NavigationItem link="/auth">Authenticate</NavigationItem>;
+  let authNavigationItem = <NavigationItem link="/auth">Login</NavigationItem>;
   let ordersNavigationItem = null;
 
   if (props.isAuthenticated) {

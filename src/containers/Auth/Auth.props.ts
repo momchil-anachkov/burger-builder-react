@@ -1,6 +1,7 @@
 export interface AuthStateProps {
   loading: boolean;
   error: null | { message: string };
+  isAuthenticated: boolean;
 }
 
 export interface AuthDispatchProps {
