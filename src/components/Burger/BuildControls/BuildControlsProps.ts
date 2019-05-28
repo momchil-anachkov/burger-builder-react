@@ -1,4 +1,5 @@
 export interface BuildControlsProps {
+  isAuthenticated: boolean;
   currentPrice: number;
   disabledInfo: { [key:string]: boolean };
   purchasable: boolean;

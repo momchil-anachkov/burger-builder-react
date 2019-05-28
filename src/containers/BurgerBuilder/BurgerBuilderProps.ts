@@ -2,10 +2,14 @@ import { RouteChildrenProps } from 'react-router';
 import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/BurgerIngredientType';
 import { BurgerBuilderState } from '../../store/burger-builder.state';
 
-export interface BurgerBuilderProps extends RouteChildrenProps, BurgerBuilderDispatchProps, BurgerBuilderReduxProps {
+export interface BurgerBuilderProps extends RouteChildrenProps, BurgerBuilderDispatchProps, BurgerBuilderStateProps {
 }
 
-export interface BurgerBuilderReduxProps extends BurgerBuilderState {
+export interface BurgerBuilderStateProps extends BurgerBuilderState {
+  isAuthenticated: boolean;
+}
+
+export interface BurgerBuilderOwnProps {
 }
 
 export interface BurgerBuilderDispatchProps {

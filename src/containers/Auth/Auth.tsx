@@ -142,10 +142,13 @@ class Auth extends React.Component<AuthProps> {
       errorMessage = this.props.error.message;
     }
 
+    let redirectTo = new URLSearchParams(this.props.history.location.search).get('redirect-to');
+    redirectTo = redirectTo || '/';
+
     let authenticatedRedirect = null;
     if (this.props.isAuthenticated) {
-      authenticatedRedirect = <Redirect to="/"></Redirect>
-    }
+      authenticatedRedirect = <Redirect to={redirectTo}></Redirect>;
+    } 
 
     return (
       <div className={classes.Auth}>

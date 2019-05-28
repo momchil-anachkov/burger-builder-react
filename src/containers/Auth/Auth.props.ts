@@ -1,3 +1,5 @@
+import { RouterProps } from 'react-router';
+
 export interface AuthStateProps {
   loading: boolean;
   error: null | { message: string };
@@ -11,5 +13,5 @@ export interface AuthDispatchProps {
 export interface AuthOwnProps {
 }
 
-export interface AuthProps extends AuthStateProps, AuthDispatchProps, AuthOwnProps {
+export interface AuthProps extends RouterProps, AuthStateProps, AuthDispatchProps, AuthOwnProps {
 }
