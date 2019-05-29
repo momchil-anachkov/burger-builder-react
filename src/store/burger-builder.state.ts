@@ -6,4 +6,4 @@ export interface BurgerBuilderState {
   ingredients: BurgerBuilderIngredients | null;
   totalPrice: number;
   error: boolean;
-};
+}

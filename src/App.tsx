@@ -7,14 +7,20 @@ import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Orders from './containers/Orders/Orders';
 import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
+import { MapDispatchToProps, connect, MapStateToProps } from 'react-redux';
+import { AppDispatchProps, AppProps, AppOwnProps, AppStateProps } from './App.props';
+import { AuthOwnProps } from './containers/Auth/Auth.props';
+import { authInit } from './store/actions/auth';
+import { AppState } from './store/app.state';
 
-class App extends Component {
+class App extends Component<AppProps> {
   state = {
-    loaded: false
+    loaded: false,
   };
 
   componentDidMount = () => {
     this.setState({ loaded: true });
+    this.props.init!();
   };
 
   render() {
@@ -23,20 +29,38 @@ class App extends Component {
       classList.push(classes.Preload);
     }
 
+    let routes = (
+      <Switch>
+        <Route path="/auth" component={Auth} />,
+        <Route path="/" component={BurgerBuilder} />
+      </Switch>
+    );
+
+    if (this.props.isAuthenticated) {
+      routes = (
+        <Switch>
+          <Route path="/checkout" component={Checkout} />,
+          <Route path="/orders" component={Orders} />,
+          <Route path="/logout" component={Logout} />,
+          <Route path="/" component={BurgerBuilder} />
+        </Switch>
+      );
+    }
+
     return (
       <div className={classList.join(' ')}>
-        <Layout>
-          <Switch>
-            <Route path="/checkout" component={Checkout} />
-            <Route path="/orders" component={Orders} />
-            <Route path="/auth" component={Auth} />
-            <Route path="/logout" component={Logout} />
-            <Route path="/" exact component={BurgerBuilder} />
-          </Switch>
-        </Layout>
+        <Layout>{routes}</Layout>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps: MapStateToProps<AppStateProps, AppOwnProps, AppState> = (state: AppState) => ({
+  isAuthenticated: state.auth.token !== null,
+});
+
+const mapDispatchToProps: MapDispatchToProps<AppDispatchProps, AuthOwnProps> = (dispatch: Function) => ({
+  init: () => dispatch(authInit()),
+});
+
+export default connect(null, mapDispatchToProps)(App);
