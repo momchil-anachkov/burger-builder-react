@@ -3,10 +3,11 @@ import { RouteChildrenProps } from 'react-router';
 export interface OrdersStateProps {
   orders: any[]
   loading: boolean,
+  userId: string,
 }
 
 export interface OrdersDispatchProps {
-  fetchOrders: () => any;
+  fetchOrders: (userId: string) => any;
 }
 
 export interface OrdersOwnProps {

@@ -118,7 +118,8 @@ class ContactData extends React.Component<ContactDataProps, any> {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.totalPrice,
-      orderData: formData
+      orderData: formData,
+      userId: this.props.userId,
     };
     this.props.orderBurger(order);
   };
@@ -222,10 +223,11 @@ class ContactData extends React.Component<ContactDataProps, any> {
   };
 }
 
-const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProps, AppState> = (state) => ({
+const mapStateToProps: MapStateToProps<ContactDataStateProps, ContactDataOwnProps, AppState> = (state): ContactDataStateProps => ({
   ingredients: state.burgerBuilder.ingredients!,
   totalPrice: state.burgerBuilder.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
+  userId: state.auth.userId!,
 });
 
 const mapDispatchToProps: MapDispatchToPropsFunction<ContactDataDispatchProps, ContactDataOwnProps> = (

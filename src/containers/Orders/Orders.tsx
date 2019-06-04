@@ -10,7 +10,7 @@ import axiosInstance from '../../axios';
 
 class Orders extends React.Component<OrdersProps> {
   componentDidMount() {
-    this.props.fetchOrders()
+    this.props.fetchOrders(this.props.userId);
   }
 
   render = () => {
@@ -32,14 +32,15 @@ class Orders extends React.Component<OrdersProps> {
   }
 }
 
-const mapStateToProps: MapStateToProps<OrdersStateProps, OrdersOwnProps, AppState> = (state: AppState) => ({
+const mapStateToProps: MapStateToProps<OrdersStateProps, OrdersOwnProps, AppState> = (state: AppState): OrdersStateProps => ({
     loading: state.order.loading,
     orders: state.order.orders,
+    userId: state.auth.userId!,
 })
 
 const mapDispatchToProps: MapDispatchToPropsFunction<OrdersDispatchProps, OrdersOwnProps> = (dispatch: Function) => ({
-  fetchOrders: () => {
-    dispatch(fetchOrders())
+  fetchOrders: (userId: string) => {
+    dispatch(fetchOrders(userId))
   },
 });
 

@@ -1,6 +1,7 @@
 import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit, FetchOrdersSuccess, FetchOrdersFailed, FetchOrdersStart} from './actionTypes';
 import { ThunkAction } from 'redux-thunk';
 import axiosInstance from '../../axios';
+import { AppState } from '../app.state';
 
 export const purchaseBurgerStart = (): PurchaseBurgerStart => ({
   type: ActionTypes.PURCHASE_BURGER_START,
@@ -49,9 +50,11 @@ export const fetchOrdersFailed = (error: Error): FetchOrdersFailed => ({
   payload: error
 });
 
-export const fetchOrders = () => (dispatch: Function) => {
-    dispatch(fetchOrdersStart());
-    axiosInstance.get('/orders')
+export const fetchOrders = (userId: string) => (
+  dispatch: Function,
+) => {
+    // axiosInstance.get('/orders/byUser/')
+    axiosInstance.get('/orders/byUser', {params: { userId } })
       .then((response) => {
         const ordersObject = Object.entries(response.data).map(([key, value]: [string, any]) => {
           return {

@@ -11,6 +11,7 @@ axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
   const modifiedConfig: AxiosRequestConfig = {
     ...config,
     params: {
+      ...config.params,
       auth: store.getState().auth.token,
     },
   }

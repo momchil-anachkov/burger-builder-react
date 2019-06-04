@@ -5,6 +5,7 @@ export interface ContactDataStateProps {
   ingredients: BurgerIngredientsMap,
   totalPrice: number,
   loading: boolean,
+  userId: string,
 }
 
 export interface ContactDataDispatchProps {
