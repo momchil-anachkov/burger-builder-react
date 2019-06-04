@@ -87,13 +87,11 @@ class Auth extends React.Component<AuthProps> {
       }
     };
     this.setState({ controls: updatedControls });
-    console.log('input changed');
   };
 
   formSubmittedHandler = (event: FormEvent) => {
     event.preventDefault();
     this.props.auth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignUp);
-    console.log('form submitted');
   };
 
   switchAuthModeHandler = (event: MouseEvent) => {

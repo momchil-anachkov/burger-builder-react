@@ -113,7 +113,6 @@ class ContactData extends React.Component<ContactDataProps, any> {
     Object.keys(this.state.orderForm).forEach((formElementKey) => {
       formData[formElementKey] = this.state.orderForm[formElementKey].value;
     });
-    console.log(formData);
 
     const order = {
       ingredients: this.props.ingredients,

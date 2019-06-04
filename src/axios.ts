@@ -7,7 +7,6 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
-  console.log(config);
   const modifiedConfig: AxiosRequestConfig = {
     ...config,
     params: {

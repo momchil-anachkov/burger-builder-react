@@ -5,7 +5,6 @@ import { ButtonType } from '../../UI/Button/ButtonProps';
 
 class OrderSummary extends React.Component<OrderSummaryProps> {
   componentDidUpdate = () => {
-    console.log('[OrderSummary] componentDidUpdate')
   }
 
   render = () => {

@@ -50,7 +50,6 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
     .post(url, authData)
     .then((response) => {
       // dispatch
-      console.log(response);
       const userId = response.data.localId;
       const idToken = response.data.idToken;
       const expiresInSeconds = response.data.expiresIn;
@@ -67,7 +66,6 @@ export const auth = (email: string, password: string, isSignup: boolean) => (dis
       dispatch(checkAuthTimeout(expiresInSeconds));
     })
     .catch((error) => {
-      console.log(error);
       dispatch(authFail(error.response.data.error));
     });
 };
