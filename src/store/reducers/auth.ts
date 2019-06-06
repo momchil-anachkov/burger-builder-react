@@ -1,8 +1,8 @@
-import { AuthActions, ActionTypes, AuthStart, AuthSuccess, AuthFail, AuthLogout } from '../actions';
+import { AuthActions, ActionTypes, AuthStart, AuthSuccess, AuthFail, AuthLogout } from '../actions/actionTypes';
 import { updateObject } from '../utility';
 import { AuthState } from '../auth.state';
 
-const initialState: AuthState = {
+export const initialState: AuthState = {
   token: null,
   userId: null,
   error: null,
