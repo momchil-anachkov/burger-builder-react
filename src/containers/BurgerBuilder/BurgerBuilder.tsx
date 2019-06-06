@@ -20,7 +20,7 @@ import { AppState } from '../../store/app.state';
 import { purchaseInit } from '../../store/actions';
 import axiosInstance from '../../axios';
 
-class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
+export class BurgerBuilder extends React.Component<BurgerBuilderProps, BurgerBuilderState> {
   public state: BurgerBuilderState = {
     purchasing: false,
   };
