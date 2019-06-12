@@ -20,8 +20,10 @@ export enum ActionTypes {
 
   AUTH_START = 'AUTH_START',
   AUTH_SUCCESS = 'AUTH_SUCCESS',
+  AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT',
   AUTH_FAIL = 'AUTH_FAIL',
   AUTH_LOGOUT = 'AUTH_LOGOUT',
+  AUTH_INITIATE_LOGOUT = 'AUTH_INITIATE_LOGOUT',
 }
 
 export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
@@ -77,8 +79,17 @@ export interface AuthSuccess extends Action<ActionTypes.AUTH_SUCCESS> {
   },
 }
 
+export interface AuthCheckTimeout extends Action<ActionTypes.AUTH_CHECK_TIMEOUT> {
+  payload: {
+    expiresIn: number,
+  },
+}
+
 export interface AuthFail extends Action<ActionTypes.AUTH_FAIL> {
   payload: Error,
+}
+
+export interface AuthInitiateLogout extends Action<ActionTypes.AUTH_INITIATE_LOGOUT> {
 }
 
 export interface AuthLogout extends Action<ActionTypes.AUTH_LOGOUT> {
@@ -100,6 +111,8 @@ export type IngredientActions = (
 export type AuthActions = (
   AuthStart |
   AuthSuccess |
+  AuthCheckTimeout |
   AuthFail |
-  AuthLogout
+  AuthLogout |
+  AuthInitiateLogout
 );

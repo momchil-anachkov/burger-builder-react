@@ -1,4 +1,4 @@
-import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthLogout } from './actionTypes';
+import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthInitiateLogout, AuthLogout, AuthCheckTimeout } from './actionTypes';
 import axiosInstance from '../../axios';
 import { ThunkDispatch } from 'redux-thunk';
 import { Dispatch } from 'redux';
@@ -18,25 +18,29 @@ export const authFail = (error: Error): AuthFail => ({
 });
 
 export const authLogout = (): AuthLogout => {
-  localStorage.removeItem('userId');
-  localStorage.removeItem('idToken');
-  localStorage.removeItem('expirationTime');
   return {
     type: ActionTypes.AUTH_LOGOUT,
   };
 };
 
-export const checkAuthTimeout = (expiresIn: number) => (dispatch: Function) => {
-  setTimeout(() => {
-    dispatch(authLogout());
-  }, expiresIn * 1000);
+export const authInitiateLogout = (): AuthInitiateLogout => {
+  return {
+    type: ActionTypes.AUTH_INITIATE_LOGOUT,
+  };
+};
+
+export const checkAuthTimeout = (expiresIn: number): AuthCheckTimeout => {
+  return {
+    type: ActionTypes.AUTH_CHECK_TIMEOUT,
+    payload: { expiresIn: expiresIn },
+  };
 };
 
 export const auth = (email: string, password: string, isSignup: boolean) => (dispatch: Function) => {
   dispatch(authStart());
   const authData = {
-    email: email,
-    password: password,
+    email,
+    password,
     returnSecureToken: true,
   };
 
@@ -79,7 +83,7 @@ export const authInit = () => (dispatch: Function) => {
     const expirationTimeFromNow = expirationTime - new Date().getTime();
     const expirationTimeFromNowInSeconds = expirationTimeFromNow / 1000;
     if (expirationTimeFromNow <= 0) {
-      dispatch(authLogout());
+      dispatch(authInitiateLogout());
     } else {
       dispatch(
         authSuccess({
