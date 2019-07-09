@@ -18,6 +18,7 @@ export enum ActionTypes {
   FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS',
   FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED',
 
+  AUTH_USER = 'AUTH_USER',
   AUTH_START = 'AUTH_START',
   AUTH_SUCCESS = 'AUTH_SUCCESS',
   AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT',
@@ -67,6 +68,14 @@ export interface FetchOrdersFailed extends Action<ActionTypes.FETCH_ORDERS_FAILE
 }
 
 export interface PurchaseInit extends Action<ActionTypes.PURCHASE_INIT> {
+}
+
+export interface AuthUser extends Action<ActionTypes.AUTH_USER> {
+  payload: {
+    email: string,
+    password: string,
+    isSignup: boolean
+  }
 }
 
 export interface AuthStart extends Action<ActionTypes.AUTH_START> {

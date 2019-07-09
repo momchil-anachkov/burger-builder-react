@@ -1,6 +1,7 @@
 import { put, delay } from 'redux-saga/effects';
-import { authLogout, authInitiateLogout } from '../actions/auth';
-import { AuthInitiateLogout, AuthCheckTimeout } from '../actions';
+import { authLogout, authInitiateLogout, authStart, authSuccess, checkAuthTimeout, authFail } from '../actions/auth';
+import { AuthInitiateLogout, AuthCheckTimeout, AuthUser } from '../actions';
+import axiosInstance from '../../axios';
 
 export function* logoutSaga(action: AuthInitiateLogout) {
   localStorage.removeItem('userId');
@@ -12,4 +13,41 @@ export function* logoutSaga(action: AuthInitiateLogout) {
 export function* checkAuthTimeoutSaga(action: AuthCheckTimeout) {
   yield delay(action.payload.expiresIn * 1000);
   yield put(authInitiateLogout());
+}
+
+export function* authUserSaga(action: AuthUser) {
+  yield put(authStart());
+  const authData = {
+    email: action.payload.email,
+    password: action.payload.password,
+    returnSecureToken: true,
+  };
+
+  let url = `/authentication/signup`;
+
+  if (!action.payload.isSignup) {
+    url = `/authentication/signin`;
+  }
+
+  try {
+    const response = yield axiosInstance
+      .post(url, authData)
+    // dispatch
+    const userId = response.data.localId;
+    const idToken = response.data.idToken;
+    const expiresInSeconds = response.data.expiresIn;
+    const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('idToken', idToken);
+    localStorage.setItem('expirationTime', `${expirationTime}`);
+    yield put(
+      authSuccess({
+        userId,
+        idToken,
+      }),
+    );
+    yield put(checkAuthTimeout(expiresInSeconds));
+  } catch (error) {
+    yield put(authFail(error.response.data.error));
+  }
 }

@@ -1,4 +1,4 @@
-import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthInitiateLogout, AuthLogout, AuthCheckTimeout } from './actionTypes';
+import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthInitiateLogout, AuthLogout, AuthCheckTimeout, AuthUser } from './actionTypes';
 import axiosInstance from '../../axios';
 import { ThunkDispatch } from 'redux-thunk';
 import { Dispatch } from 'redux';
@@ -36,42 +36,15 @@ export const checkAuthTimeout = (expiresIn: number): AuthCheckTimeout => {
   };
 };
 
-export const auth = (email: string, password: string, isSignup: boolean) => (dispatch: Function) => {
-  dispatch(authStart());
-  const authData = {
-    email,
-    password,
-    returnSecureToken: true,
-  };
-
-  let url = `/authentication/signup`;
-
-  if (!isSignup) {
-    url = `/authentication/signin`;
+export const auth = (email: string, password: string, isSignup: boolean): AuthUser => {
+  return {
+    type: ActionTypes.AUTH_USER,
+    payload: {
+      email,
+      password,
+      isSignup
+    }
   }
-
-  axiosInstance
-    .post(url, authData)
-    .then((response) => {
-      // dispatch
-      const userId = response.data.localId;
-      const idToken = response.data.idToken;
-      const expiresInSeconds = response.data.expiresIn;
-      const expirationTime = new Date().getTime() + expiresInSeconds * 1000;
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('idToken', idToken);
-      localStorage.setItem('expirationTime', `${expirationTime}`);
-      dispatch(
-        authSuccess({
-          userId,
-          idToken,
-        }),
-      );
-      dispatch(checkAuthTimeout(expiresInSeconds));
-    })
-    .catch((error) => {
-      dispatch(authFail(error.response.data.error));
-    });
 };
 
 export const authInit = () => (dispatch: Function) => {
