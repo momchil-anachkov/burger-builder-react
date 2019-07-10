@@ -1,7 +1,4 @@
-import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthInitiateLogout, AuthLogout, AuthCheckTimeout, AuthUser } from './actionTypes';
-import axiosInstance from '../../axios';
-import { ThunkDispatch } from 'redux-thunk';
-import { Dispatch } from 'redux';
+import { AuthStart, ActionTypes, AuthSuccess, AuthFail, AuthInitiateLogout, AuthLogout, AuthCheckTimeout, AuthUser, AuthInit } from './actionTypes';
 
 export const authStart = (): AuthStart => ({
   type: ActionTypes.AUTH_START,
@@ -47,24 +44,8 @@ export const auth = (email: string, password: string, isSignup: boolean): AuthUs
   }
 };
 
-export const authInit = () => (dispatch: Function) => {
-  const userId = localStorage.getItem('userId');
-  const idToken = localStorage.getItem('idToken');
-  const expirationTime = parseInt(localStorage.getItem('expirationTime')!, 10);
-
-  if (idToken) {
-    const expirationTimeFromNow = expirationTime - new Date().getTime();
-    const expirationTimeFromNowInSeconds = expirationTimeFromNow / 1000;
-    if (expirationTimeFromNow <= 0) {
-      dispatch(authInitiateLogout());
-    } else {
-      dispatch(
-        authSuccess({
-          userId,
-          idToken,
-        }),
-      );
-      dispatch(checkAuthTimeout(expirationTimeFromNowInSeconds));
-    }
+export const authInit = (): AuthInit => {
+  return {
+    type: ActionTypes.AUTH_INIT,
   }
 };

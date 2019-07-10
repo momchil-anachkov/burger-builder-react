@@ -19,6 +19,7 @@ export enum ActionTypes {
   FETCH_ORDERS_FAILED = 'FETCH_ORDERS_FAILED',
 
   AUTH_USER = 'AUTH_USER',
+  AUTH_INIT = 'AUTH_INIT',
   AUTH_START = 'AUTH_START',
   AUTH_SUCCESS = 'AUTH_SUCCESS',
   AUTH_CHECK_TIMEOUT = 'AUTH_CHECK_TIMEOUT',
@@ -79,6 +80,9 @@ export interface AuthUser extends Action<ActionTypes.AUTH_USER> {
 }
 
 export interface AuthStart extends Action<ActionTypes.AUTH_START> {
+}
+
+export interface AuthInit extends Action<ActionTypes.AUTH_INIT> {
 }
 
 export interface AuthSuccess extends Action<ActionTypes.AUTH_SUCCESS> {
