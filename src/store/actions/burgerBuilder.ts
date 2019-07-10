@@ -2,8 +2,6 @@ import { BurgerIngredientType } from '../../components/Burger/BurgerIngredient/B
 import { AddIngredient, RemoveIngredient, ActionTypes, SetIngredients, FetchIngredientsFail } from './actionTypes';
 import { BurgerBuilderIngredientsState } from '../../containers/BurgerBuilder/BurgerBuilderState';
 import { ActionCreator } from 'redux';
-import { ThunkAction } from 'redux-thunk';
-import axiosInstance from '../../axios';
 
 export const addIngredient = (ingredientType: BurgerIngredientType): AddIngredient => ({
   type: ActionTypes.ADD_INGREDIENT,
@@ -21,12 +19,11 @@ export const setIngredients: ActionCreator<SetIngredients> = (ingredients: Burge
 });
 
 export const fetchIngredientsFail = (): FetchIngredientsFail => ({
-  type: ActionTypes.FETCH_INGREDIENTS_FAIL
+  type: ActionTypes.FETCH_INGREDIENTS_FAIL,
 });
 
-export const initializeIngredients = (): ThunkAction<any, {}, {}, SetIngredients | FetchIngredientsFail> => (dispatch) => {
-  axiosInstance
-    .get('/ingredients')
-    .then((response) => dispatch(setIngredients(response.data)))
-    .catch((err) => dispatch(fetchIngredientsFail()));
+export const initializeIngredients = () => {
+  return {
+    type: ActionTypes.INITIALIZE_INGREDIENTS,
+  }
 };

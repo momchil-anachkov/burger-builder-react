@@ -5,6 +5,7 @@ import { BurgerBuilderIngredientsState } from '../../containers/BurgerBuilder/Bu
 export enum ActionTypes {
   ADD_INGREDIENT = 'ADD_INGREDIENT',
   REMOVE_INGREDIENT = 'REMOVE_INGREDIENT',
+  INITIALIZE_INGREDIENTS = 'INITIALIZE_INGREDIENTS',
   SET_INGREDIENTS = 'SET_INGREDIENTS',
   FETCH_INGREDIENTS_FAIL = 'FETCH_INGREDIENTS_FAIL',
 
@@ -34,6 +35,9 @@ export interface AddIngredient extends Action<ActionTypes.ADD_INGREDIENT> {
 
 export interface RemoveIngredient extends Action<ActionTypes.REMOVE_INGREDIENT> {
   payload: BurgerIngredientType;
+}
+
+export interface InitializeIngredients extends Action<ActionTypes.INITIALIZE_INGREDIENTS> {
 }
 
 export interface SetIngredients extends Action<ActionTypes.SET_INGREDIENTS> {
