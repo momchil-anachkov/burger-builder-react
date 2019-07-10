@@ -1,7 +1,6 @@
-import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit, FetchOrdersSuccess, FetchOrdersFailed, FetchOrdersStart} from './actionTypes';
+import { ActionTypes, PurchaseBurgerSuccess, PurchaseBurgerFail, PurchaseBurgerStart, PurchaseInit, FetchOrdersSuccess, FetchOrdersFailed, FetchOrdersStart, PurchaseBurger} from './actionTypes';
 import { ThunkAction } from 'redux-thunk';
 import axiosInstance from '../../axios';
-import { AppState } from '../app.state';
 
 export const purchaseBurgerStart = (): PurchaseBurgerStart => ({
   type: ActionTypes.PURCHASE_BURGER_START,
@@ -20,16 +19,13 @@ export const purchaseBurgerFail = (error: string): PurchaseBurgerFail => ({
   payload: error
 });
 
-export const purchaseBurger = (orderData: any): ThunkAction<void, {}, {}, PurchaseBurgerStart | PurchaseBurgerSuccess | PurchaseBurgerFail> => (dispatch) => {
-  dispatch(purchaseBurgerStart());
-  axiosInstance
-    .post('/orders', orderData)
-    .then((response) => {
-      dispatch(purchaseBurgerSuccess(response.data.name, orderData));
-    })
-    .catch((error) => {
-      dispatch(purchaseBurgerFail(error));
-    });
+export const purchaseBurger = (orderData: any): PurchaseBurger => {
+  return {
+    type: ActionTypes.PURCHASE_BURGER,
+    payload: {
+      orderData
+    }
+  };
 };
 
 export const purchaseInit = (): PurchaseInit => ({
@@ -50,19 +46,11 @@ export const fetchOrdersFailed = (error: Error): FetchOrdersFailed => ({
   payload: error
 });
 
-export const fetchOrders = (userId: string) => (
-  dispatch: Function,
-) => {
-    // axiosInstance.get('/orders/byUser/')
-    axiosInstance.get('/orders/byUser', {params: { userId } })
-      .then((response) => {
-        const ordersObject = Object.entries(response.data).map(([key, value]: [string, any]) => {
-          return {
-            ...value,
-            id: key,
-          };
-        });
-        dispatch(fetchOrdersSuccess(ordersObject));
-      })
-      .catch((error) => dispatch(fetchOrdersFailed(error)));
+export const fetchOrders = (userId: string) => {
+  return {
+    type: ActionTypes.FETCH_ORDERS,
+    payload: {
+      userId
+    }
+  }
 }
