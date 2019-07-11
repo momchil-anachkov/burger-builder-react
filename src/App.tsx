@@ -19,6 +19,7 @@ const app = (props: AppProps) => {
 
     useEffect(() => {
       setLoaded(true);
+      props.init!();
     }, []);
 
     const classList = [ classes.App ];
