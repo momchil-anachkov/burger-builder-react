@@ -58,55 +58,6 @@ const app = (props: AppProps) => {
     );
 }
 
-// class App extends Component<AppProps> {
-//   state = {
-//     loaded: false,
-//   };
-
-//   componentDidMount = () => {
-//     this.setState({ loaded: true });
-//     this.props.init!();
-//   };
-
-//   render() {
-//     const classList = [ classes.App ];
-//     if (!this.state.loaded) {
-//       classList.push(classes.Preload);
-//     }
-
-//     let routes = (
-//       <Suspense fallback={<div>Loading...</div>}>
-//         <Switch>
-//           <Route path="/auth" component={Auth} />,
-//           <Route path="/" exact component={BurgerBuilder} />
-//           <Redirect to="/" />
-//         </Switch>
-//       </Suspense>
-//     );
-
-//     if (this.props.isAuthenticated) {
-//       routes = (
-//         <Suspense fallback={<div>Loading...</div>}>
-//           <Switch>
-//             <Route path="/checkout" component={Checkout} />,
-//             <Route path="/orders" component={Orders} />,
-//             <Route path="/logout" component={Logout} />,
-//             <Route path="/auth" component={Auth} />,
-//             <Route path="/" exact component={BurgerBuilder} />
-//             <Redirect from="/auth" to="/" />
-//           </Switch>
-//         </Suspense>
-//       );
-//     }
-
-//     return (
-//       <div className={classList.join(' ')}>
-//         <Layout>{routes}</Layout>
-//       </div>
-//     );
-//   }
-// }
-
 const mapStateToProps: MapStateToProps<AppStateProps, AppOwnProps, AppState> = (state: AppState) => ({
   isAuthenticated: state.auth.token !== null,
 });
