@@ -22,7 +22,7 @@ const app = (props: AppProps) => {
     }, []);
 
     const classList = [ classes.App ];
-    if (loaded) {
+    if (!loaded) {
       classList.push(classes.Preload);
     }
 
