@@ -14,7 +14,7 @@ const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'));
 const Orders = React.lazy(() => import('./containers/Orders/Orders'));
 const Auth = React.lazy(() => import('./containers/Auth/Auth'));
 
-const app = (props: AppProps) => {
+const App = (props: AppProps) => {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
@@ -67,4 +67,4 @@ const mapDispatchToProps: MapDispatchToProps<AppDispatchProps, AuthOwnProps> = (
   init: () => dispatch(authInit()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(app) as any;
+export default connect(mapStateToProps, mapDispatchToProps)(App) as any;
