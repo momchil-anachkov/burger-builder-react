@@ -4,11 +4,9 @@ import { authLogout } from '../../../store/actions/auth';
 import { LogoutProps } from './LogoutProps';
 import { Redirect } from 'react-router';
 
-class Logout extends React.Component<LogoutProps> {
-  render = () => {
-    this.props.logout();
-    return <Redirect to="/"></Redirect>
-  }
+const Logout = (props: LogoutProps) => {
+  props.logout();
+  return <Redirect to="/"></Redirect>
 }
 
 const mapDispatchToProps: MapDispatchToProps<{}, {}> = (dispatch: Function) => ({
