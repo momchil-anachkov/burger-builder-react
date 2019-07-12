@@ -40,7 +40,7 @@ const removeIngredient = (state: BurgerBuilderState, action: RemoveIngredient) =
   const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
   const updatedState = {
     ingredients: updatedIngredients,
-    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload]
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload]
   };
   return updateObject(state, updatedState);
 };
